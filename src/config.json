@@ -1,0 +1,9 @@
+{
+  "configurations": [
+    {
+      "name": "ugly command",
+      "mode": "debug",
+      "args": ["-h"]
+    }
+  ]
+}

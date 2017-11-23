@@ -1,9 +1,9 @@
-require_relative 'job_tests.rb'
-require_relative 'failing_use_case_tests.rb'
-require_relative 'use_cases_test.rb'
+# require_relative 'job_tests.rb'
+# require_relative 'failing_use_case_tests.rb'
+# require_relative 'use_cases_test.rb'
 require_relative 'illegal_arguments_test.rb'
-require_relative 'flag_tests.rb'
-require_relative 'host_tests.rb' #
+# require_relative 'flag_tests.rb'
+# require_relative 'host_tests.rb' #
 # Copyright (c) 2013-2016 by appPlant GmbH. All rights reserved.
 #
 # @APPPLANT_LICENSE_HEADER_START@
@@ -34,12 +34,12 @@ PATH = { 'PATH' => "#{File.expand_path('tools', __dir__)}:#{ENV['PATH']}"  }
 
 
 class TestGoo < Test::Unit::TestCase
-  include JobTests
-  include FailingUseCaseTests
+  # include JobTests
+  # include FailingUseCaseTests
   include IllegalArgumentsTest
-  include FlagTests
-  include HostTests
-  include UseCasesTest
+  # include FlagTests
+  # include HostTests
+  # include UseCasesTest
 
 end
 

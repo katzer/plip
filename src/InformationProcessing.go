@@ -22,17 +22,12 @@ func parseConnectionDetails(ids []string) []Planet {
 	for i, skiString := range skiStrings {
 		tokens := strings.Split(skiString, skiDelim)
 		connectionURL := tokens[len(tokens)-1]
-		urlTokens := strings.Split(connectionURL, ":")
 
-		var dbID string
 		valid, _ := strconv.ParseBool(tokens[0])
 		if !valid {
 			err = fmt.Sprintf("%s\n", tokens[len(tokens)-1])
 		}
 		planetID, planetType, name := tokens[1], tokens[2], tokens[3]
-		if len(urlTokens) > 1 {
-			dbID = urlTokens[0]
-		}
 
 		user, host := getUserAndHost(connectionURL)
 
@@ -40,15 +35,12 @@ func parseConnectionDetails(ids []string) []Planet {
 			id:         planetID,
 			planetType: planetType,
 			name:       name,
-			dbID:       dbID,
 			user:       user,
 			host:       host,
 			valid:      valid,
 			outputStruct: &StructuredOuput{
 				planet:   planetID,
 				output:   err,
-				table:    make([][]string, 0),
-				keys:     make([]string, 0),
 				position: i,
 				errored:  false,
 				errors:   make(map[string]string),
@@ -71,15 +63,12 @@ func makeEmptyPlanet() Planet {
 		id:         "-",
 		planetType: "-",
 		name:       "-",
-		dbID:       "-",
 		user:       "-",
 		host:       "-",
 		valid:      false,
 		outputStruct: &StructuredOuput{
 			planet:   "-",
 			output:   "fifa did not return any results",
-			table:    make([][]string, 0),
-			keys:     make([]string, 0),
 			position: 0,
 			errored:  false,
 		},
@@ -96,8 +85,10 @@ func getKeyPath() string {
 }
 
 func isSupported(planetType string) bool {
-	supported := map[string]bool{database: true, linuxServer: true, webServer: false}
-	return supported[planetType]
+	if planetType == "server" {
+		return true
+	}
+	return false
 }
 
 /**
@@ -159,15 +150,4 @@ func validateSkiFormat(fifaString string) bool {
 	firstLine := strings.Split(fifaString, "\n")[0]
 	tokens := strings.Split(firstLine, skiDelim)
 	return len(tokens) >= fifaTokenCount
-}
-
-func getScriptPath(opts *Opts) string {
-	sql := strings.HasSuffix(strings.ToLower(opts.ScriptName), ".sql")
-	if path.IsAbs(opts.ScriptName) {
-		return opts.ScriptName
-	}
-	if sql {
-		return path.Join(os.Getenv("ORBIT_HOME"), sqlDirectory, opts.ScriptName)
-	}
-	return path.Join(os.Getenv("ORBIT_HOME"), scriptDirectory, opts.ScriptName)
 }

@@ -4,8 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"path"
-	"strings"
 
 	"github.com/fatih/color"
 	log "github.com/sirupsen/logrus"
@@ -15,30 +13,28 @@ var help, debug, load, _version bool
 var own, mode string
 
 func main() {
+	validateArgsCount()
 	opts := parseOptions()
-	validateArgsCount(&opts)
 	validateEnv()
 	opts.validate()
 
-	verbose := opts.Debug || len(opts.LogFile) > 0
-	setupLogger(opts.LogFile, verbose)
 	setupDirs()
 
 	log.Infof("Started with args: %v", os.Args)
 	log.Debug(&opts)
 	exec := makeExecutor(&opts)
 	exec.execMain(&opts)
-	if len(jobFile) == 0 {
-		formatAndPrint(exec.planets, &opts, color.Output)
-		handleExitCode(exec.planets)
-		return
-	}
-	options := map[string]string{}
-	options["job_name"] = path.Base(jobFile)
-	options["orbit_home"] = os.Getenv("ORBIT_HOME")
-	options["output"] = "reports"
-
-	createJSONReport(options, exec.planets, &opts)
+	//if len(jobFile) == 0 {
+	printUnformatted(exec.planets, color.Output)
+	handleExitCode(exec.planets)
+	return
+	//}
+	// options := map[string]string{}
+	// options["job_name"] = path.Base(jobFile)
+	// options["orbit_home"] = os.Getenv("ORBIT_HOME")
+	// options["output"] = "reports"
+	//
+	// createJSONReport(options, exec.planets, &opts)
 }
 
 // if there were any errors during the execution of command or scripts
@@ -95,20 +91,18 @@ func parseOptions() Opts {
 	flag.BoolVar(&load, "l", false, "ssh profile loading")
 	flag.BoolVar(&_version, "v", false, "version")
 	flag.StringVar(&own, "own", "", "user (and group) to be made owner of this file")
-	flag.StringVar(&mod, "mod", "", "filemode to be used for this file")
+	flag.StringVar(&mode, "mod", "", "filemode to be used for this file")
 	// flag.Usage = printUsage
 	flag.Parse()
 
-	tail := strings.Split(flag.Args(), " ")
+	tail := flag.Args()
+	//tail := strings.Split(flag.Args(), " ")
 
 	opts := Opts{
 		Help:    help,
-		Pretty:  pretty,
 		Debug:   debug,
 		Load:    load,
 		Version: _version,
-		Mode:    maxToKeep,
-		Owner:   template,
 		Source:  tail[0],
 		Dest:    tail[1],
 		Planets: tail[2:],
@@ -119,16 +113,14 @@ func parseOptions() Opts {
 	return opts
 }
 
-func validateArgsCount(opts *Opts) {
-	if opts.Version {
-		printVersion()
-		os.Exit(0)
-	}
-	tooFew := len(os.Args) == 1
-	// TODO Check if flags package removes the leading and trailing white spaces.
-	scriptEmpty := len(opts.ScriptName) == 0
-	cmdEmpty := len(opts.Command) == 0
-	if tooFew || scriptEmpty && cmdEmpty {
+func validateArgsCount() {
+	// if opts.Version {
+	// 	printVersion()
+	// 	os.Exit(0)
+	// }
+	tooFew := len(os.Args) < 4
+
+	if tooFew {
 		printUsage()
 	}
 }
@@ -140,9 +132,6 @@ func validateEnv() {
 }
 
 func postProcessing(opts *Opts) {
-	opts.Command = strings.Trim(opts.Command, "\"")
-	opts.Template = strings.Trim(opts.Template, "\"")
-	opts.ScriptName = strings.Trim(opts.ScriptName, "\"")
 }
 func setupDirs() {
 	makeDir("tmp")

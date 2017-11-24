@@ -22,6 +22,7 @@ module IllegalArgumentsTest
             "#{ENV["APP_HOME"]}/bintest/testFolder/bintest.sh",
             '$HOME/code/bintest/testFolder/test/bintest.sh', 'app')
 
+
     assert_false status.success?, 'Process did exit cleanly'
     assert_include output, "Process exited with status 1 "
   end

@@ -20,7 +20,7 @@ func main() {
 
 	setupDirs()
 
-	log.Infof("Started with args: %v", os.Args)
+	log.Debug("Started with args: %v", os.Args)
 	log.Debug(&opts)
 	exec := makeExecutor(&opts)
 	exec.execMain(&opts)
@@ -92,17 +92,20 @@ func parseOptions() Opts {
 	flag.BoolVar(&_version, "v", false, "version")
 	flag.StringVar(&own, "own", "", "user (and group) to be made owner of this file")
 	flag.StringVar(&mode, "mod", "", "filemode to be used for this file")
-	// flag.Usage = printUsage
 	flag.Parse()
 
 	tail := flag.Args()
-	//tail := strings.Split(flag.Args(), " ")
+	if len(tail) < 3 {
+		printUsage()
+	}
 
 	opts := Opts{
 		Help:    help,
 		Debug:   debug,
 		Load:    load,
 		Version: _version,
+		Mode:    mode,
+		Owner:   own,
 		Source:  tail[0],
 		Dest:    tail[1],
 		Planets: tail[2:],

@@ -12,10 +12,11 @@ import (
 )
 
 func printUnformatted(planets []Planet, writer io.Writer) {
-	if !strings.HasSuffix(planets[len(planets)-1].outputStruct.output, "\n") {
-		planets[len(planets)-1].outputStruct.output += "\n"
-	}
 	for _, planet := range planets {
+		output := strings.Trim(planet.outputStruct.output, "\n")
+		if output == "" {
+			planet.outputStruct.output = ""
+		}
 		if planet.outputStruct.errored {
 			fmt.Fprint(writer, colorize(planet.outputStruct.errors["output"]))
 			continue

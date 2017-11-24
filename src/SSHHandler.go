@@ -11,7 +11,6 @@ func execCommand(command string, planet *Planet, opts *Opts) error {
 	log.Debugf("function: execCommand")
 	log.Debugf("user, host : %s %s", planet.user, planet.host)
 	keyPath := getKeyPath()
-	fmt.Println("command is " + command)
 	ssh := &easyssh.MakeConfig{
 		User:   planet.user,
 		Server: planet.host,
@@ -46,8 +45,6 @@ func uploadFile(planet *Planet, opts *Opts) error {
 		Key:    keyPath,
 		Port:   "22",
 	}
-	fmt.Println(ssh)
-	fmt.Println(opts.Source)
 
 	//scriptPath := getScriptPath(opts)
 

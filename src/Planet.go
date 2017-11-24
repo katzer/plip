@@ -31,7 +31,7 @@ type StructuredOuput struct {
 // codebeat:enable[TOO_MANY_IVARS]
 
 func (planet *Planet) execute(opts *Opts) {
-	uploadFile(planet, opts)
+
 	sourcepath := strings.Split(opts.Source, "/")
 	filename := sourcepath[len(sourcepath)-1]
 	src := strings.Join([]string{"$HOME", filename}, "/")
@@ -41,9 +41,33 @@ func (planet *Planet) execute(opts *Opts) {
 	} else {
 		dest = opts.Dest
 	}
+
+	planet.upload(opts, src, dest)
+
+	if opts.Mode != "" {
+		planet.chmod(opts, dest)
+	}
+	if opts.Owner != "" {
+		planet.chown(opts, dest)
+	}
+}
+
+func (planet *Planet) upload(opts *Opts, src string, dest string) {
+	uploadFile(planet, opts)
+
 	fullInfo := []string{"mv", src, dest}
 	moveCommand := strings.Join(fullInfo, " ")
 	execCommand(moveCommand, planet, opts)
+}
+
+func (planet *Planet) chmod(opts *Opts, file string) {
+	modCommand := strings.Join([]string{"chmod", opts.Mode, file}, " ")
+	execCommand(modCommand, planet, opts)
+}
+
+func (planet *Planet) chown(opts *Opts, file string) {
+	ownCommand := strings.Join([]string{"chown", opts.Owner, file}, " ")
+	execCommand(ownCommand, planet, opts)
 }
 
 func (planet *Planet) planetInfo(opts *Opts) {

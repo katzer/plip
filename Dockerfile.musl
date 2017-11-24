@@ -31,6 +31,7 @@ RUN go get github.com/olekukonko/tablewriter
 RUN go get github.com/fatih/color
 
 ENV ORBIT_HOME $APP_HOME/bintest/orbit
+ENV PATH $PATH:/root/code/bintest/tools
 
 RUN apk update && apk add --no-cache ruby-dev build-base
 RUN gem install --no-ri --no-rdoc json -v 1.8.2

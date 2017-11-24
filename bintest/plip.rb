@@ -1,6 +1,6 @@
 # require_relative 'job_tests.rb'
 # require_relative 'failing_use_case_tests.rb'
-# require_relative 'use_cases_test.rb'
+require_relative 'use_cases_test.rb'
 require_relative 'illegal_arguments_test.rb'
 # require_relative 'flag_tests.rb'
 # require_relative 'host_tests.rb' #
@@ -39,7 +39,7 @@ class TestGoo < Test::Unit::TestCase
   include IllegalArgumentsTest
   # include FlagTests
   # include HostTests
-  # include UseCasesTest
+  include UseCasesTest
 
 end
 

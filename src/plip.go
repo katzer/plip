@@ -72,14 +72,15 @@ func isValidPlanet(planet Planet) bool {
 
 func printUsage() {
 	usage := `plip - Planet Impact Probe
-	usage: plip [options...] <sourcepath> <destinationpath> <planets>...
-	Options:
-	-own="<owner[:group]>"   	Execute script and return result
-	-mod="<mode>"      	      Execute script and return result
-	-l    Load bash profiles on server
-	-h    Display this help text
-	-v    Show version number
-	-d    Show extended debug informations, set logging level to debug
+
+usage: plip [options...] <sourcepath> <destinationpath> <planets>...
+Options:
+-own="<owner[:group]>"    Execute script and return result
+-mod="<mode>"      	      Execute script and return result
+-l    Load bash profiles on server
+-h    Display this help text
+-v    Show version number
+-d    Show extended debug informations, set logging level to debug
 `
 	fmt.Println(usage)
 	os.Exit(0)

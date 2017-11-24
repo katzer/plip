@@ -26,8 +26,6 @@ module IllegalArgumentsTest
     assert_include output, "Process exited with status 1 "
   end
 
-
-
   def test_not_enough_arguments
     output, error, status = Open3.capture3(PATH, BIN, '-d=true', 'app')
 

@@ -35,3 +35,4 @@ ENV ORBIT_HOME $APP_HOME/bintest/orbit
 ENV PATH $PATH:/root/code/bintest/tools
 
 RUN gem install --no-ri --no-rdoc json -v 1.8.2
+RUN gem install --no-ri --no-rdoc os

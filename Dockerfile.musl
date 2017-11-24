@@ -35,3 +35,4 @@ ENV PATH $PATH:/root/code/bintest/tools
 
 RUN apk update && apk add --no-cache ruby-dev build-base
 RUN gem install --no-ri --no-rdoc json -v 1.8.2
+RUN gem install --no-ri --no-rdoc os

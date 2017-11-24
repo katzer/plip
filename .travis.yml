@@ -15,6 +15,7 @@ script:
 
 before_deploy:
 - scripts/release
+- `gem install --no-ri --no-rdoc os`
 - export BUILD_VERSION=`rake version`
 - sudo chmod -R 1777 releases
 - ls -la releases

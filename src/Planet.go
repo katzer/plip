@@ -37,7 +37,7 @@ func (planet *Planet) execute(opts *Opts) {
 	src := strings.Join([]string{"$HOME", filename}, "/")
 	var dest string
 	if strings.HasSuffix(opts.Dest, "/") {
-		dest = strings.Join([]string{opts.Dest, filename}, "/")
+		dest = strings.Join([]string{opts.Dest, filename}, "")
 	} else {
 		dest = opts.Dest
 	}

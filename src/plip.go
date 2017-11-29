@@ -13,7 +13,6 @@ var help, debug, load, _version bool
 var own, mode string
 
 func main() {
-	validateArgsCount()
 	opts := parseOptions()
 	validateEnv()
 	opts.validate()
@@ -95,8 +94,15 @@ func parseOptions() Opts {
 	flag.StringVar(&mode, "mod", "", "filemode to be used for this file")
 	flag.Parse()
 
+	if _version {
+		printVersion()
+		os.Exit(0)
+	}
+
+	validateArgsCount()
 	tail := flag.Args()
 	if len(tail) < 3 {
+		fmt.Println("does it even go here?")
 		printUsage()
 	}
 

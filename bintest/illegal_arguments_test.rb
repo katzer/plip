@@ -4,14 +4,14 @@ module IllegalArgumentsTest
 
 
   def test_illegal_flag
-    output, error, status = Open3.capture3(PATH, BIN, '-waga=true', 'app')
+    output, error, status = Open3.capture3(PATH, BIN, '-illegal')
 
-    assert_include output, 'plip - Planet Impact Probe', 'Output was not correct'
-    assert_true status.success?, 'Process did not exit cleanly'
+    assert_include error, 'flag provided but not defined', 'Output was not correct'
+    assert_false status.success?, 'Process did exit cleanly'
   end
 
   def test_not_enough_tail
-    output, error, status = Open3.capture3(PATH, BIN, '-mod="777"', '-own="root:root"', 'sutff/to/stuff', 'app')
+    output, error, status = Open3.capture3(PATH, BIN, '-mod="777"', '-own="root:root"', 'stuff/to/stuff', 'app')
 
     assert_include output, 'plip - Planet Impact Probe', 'Output was not correct'
     assert_true status.success?, 'Process did not exit cleanly'

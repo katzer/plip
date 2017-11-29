@@ -1,4 +1,4 @@
-# ski [![Build Status](https://travis-ci.org/appPlant/plip.svg?branch=master)](https://travis-ci.org/appPlant/plip)
+# plip [![Build Status](https://travis-ci.org/appPlant/plip.svg?branch=master)](https://travis-ci.org/appPlant/plip)
 
 Upload a file on multiple servers in parallel.
 

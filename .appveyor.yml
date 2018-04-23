@@ -20,16 +20,28 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-compile: &defaults
-  dockerfile: Dockerfile.glibc-2.12
-  environment:
-    MRUBY_CONFIG: build_config.glibc-2.12.rb
-    MRUBY_VERSION: ${MRUBY_VERSION}
-bintest:
-  <<: *defaults
-clean:
-  <<: *defaults
-shell:
-  <<: *defaults
-release:
-  <<: *defaults
+version: "{build}"
+
+environment:
+  global:
+    COMPILER: C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1
+    TOOLCHAIN: gcc
+    MRUBY_CLI_LOCAL: 1
+  matrix:
+  - MRUBY_VERSION: 1.4.0
+  - MRUBY_VERSION: head
+
+matrix:
+  allow_failures:
+  - MRUBY_VERSION: head
+
+init:
+- SET PATH=%COMPILER%\bin;C:\Ruby25-x64\bin;%PATH%;C:\cygwin64\bin
+- gcc --version
+
+build_script:
+- rake compile
+
+test_script:
+- DEL mruby\mrbgems\mruby-compiler\bintest\*.rb
+- rake test:bintest

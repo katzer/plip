@@ -20,16 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-compile: &defaults
-  dockerfile: Dockerfile.glibc-2.12
-  environment:
-    MRUBY_CONFIG: build_config.glibc-2.12.rb
-    MRUBY_VERSION: ${MRUBY_VERSION}
-bintest:
-  <<: *defaults
-clean:
-  <<: *defaults
-shell:
-  <<: *defaults
-release:
-  <<: *defaults
+class Symbol
+  def to_proc
+    ->(obj, *args, &block) { obj.__send__(self, *args, &block) }
+  end
+end

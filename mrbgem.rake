@@ -20,16 +20,21 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-compile: &defaults
-  dockerfile: Dockerfile.glibc-2.12
-  environment:
-    MRUBY_CONFIG: build_config.glibc-2.12.rb
-    MRUBY_VERSION: ${MRUBY_VERSION}
-bintest:
-  <<: *defaults
-clean:
-  <<: *defaults
-shell:
-  <<: *defaults
-release:
-  <<: *defaults
+require_relative 'mrblib/plip/version'
+
+MRuby::Gem::Specification.new('plip') do |spec|
+  spec.license = 'Apache 2.0'
+  spec.author  = 'Sebastián Katzer, appPlant GmbH'
+  spec.version = PLIP::VERSION
+  spec.bins    = ['plip']
+
+  spec.add_dependency 'mruby-io',              core: 'mruby-io'
+  spec.add_dependency 'mruby-exit',            core: 'mruby-exit'
+  spec.add_dependency 'mruby-enum-ext',        core: 'mruby-enum-ext'
+  spec.add_dependency 'mruby-thread',          mgem: 'mruby-thread'
+  spec.add_dependency 'mruby-tiny-opt-parser', mgem: 'mruby-tiny-opt-parser'
+  spec.add_dependency 'mruby-ansi-colors',     mgem: 'mruby-ansi-colors'
+  spec.add_dependency 'mruby-env',             mgem: 'mruby-env'
+  spec.add_dependency 'mruby-os',              mgem: 'mruby-os'
+  spec.add_dependency 'mruby-sftp',            mgem: 'mruby-sftp'
+end

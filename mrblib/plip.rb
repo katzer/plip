@@ -101,6 +101,6 @@ end
 def upload(opts, planets)
   start_sftp_for_each(planets) do |sftp|
     sftp.upload(opts[:local], opts[:remote])
-    sftp.setstat(opts[:remote], opts)
+    # sftp.setstat(opts[:remote], opts)
   end
 end

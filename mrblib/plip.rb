@@ -85,7 +85,7 @@ end
 def download(opts, planets)
   start_sftp_for_each(planets) do |sftp|
     if opts[:local]
-      sftp.download(opts[:remote], "#{opts[:local]}.#{host}")
+      sftp.download(opts[:remote], "#{opts[:local]}.#{sftp.session.host}")
     else
       print sftp.download(opts[:remote])
     end

@@ -23,14 +23,17 @@
 require 'fileutils'
 
 mruby_version = ENV['MRUBY_VERSION']
-mruby_version = '1.4.0' if !mruby_version || mruby_version.empty?
+mruby_version = '1.4.1' if !mruby_version || mruby_version.empty?
 
 file :mruby do
-  if mruby_version == 'head'
-    sh "git clone --depth=1 https://github.com/mruby/mruby"
+  case mruby_version.downcase
+  when 'head'
+    sh 'git clone --depth 1 git://github.com/mruby/mruby.git'
+  when 'stable'
+    sh 'git clone --depth 1 git://github.com/mruby/mruby.git -b stable'
   else
     sh "curl -L --fail --retry 3 --retry-delay 1 https://github.com/mruby/mruby/archive/#{mruby_version}.tar.gz -s -o - | tar zxf -"
-    FileUtils.mv("mruby-#{mruby_version}", "mruby")
+    mv "mruby-#{mruby_version}", 'mruby'
   end
 end
 

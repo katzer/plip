@@ -76,7 +76,7 @@ def async(&block)
   ths  = []
 
   planets.each_slice(size) do |slice|
-    Thread.new(slice) { |list| block&.call(list) && true }
+    ths << Thread.new(slice) { |list| block&.call(list) && true }
   end
 
   ths.each(&:join)
@@ -89,6 +89,8 @@ end
 # @return [ Void ]
 def start_sftp_for_each(planets)
   planets.each do |user, host|
-    SFTP.start(host, user, key: ENV['ORBIT_KEY']) { |sftp| yield sftp }
+    SFTP.start(host, user, key: ENV['ORBIT_KEY'], compress: true) do |sftp|
+      yield sftp
+    end
   end
 end

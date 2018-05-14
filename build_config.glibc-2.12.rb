@@ -22,7 +22,6 @@
 
 def gem_config(conf)
   conf.gem __dir__
-  conf.cc.flags += %w[-DMBEDTLS_THREADING_PTHREAD -DMBEDTLS_THREADING_C]
 end
 
 MRuby::Build.new do |conf|

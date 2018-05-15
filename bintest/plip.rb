@@ -21,82 +21,134 @@
 # SOFTWARE.
 
 require 'open3'
+require 'tmpdir'
+require 'securerandom'
 require_relative '../mrblib/plip/version'
 
-BINARY  = File.expand_path('../mruby/bin/plip', __dir__)
+BIN = File.expand_path('../mruby/bin/plip', __dir__).freeze
 
-ORB_KEY = { 'ORBIT_KEY' => 'Rakefile' }.freeze
+NO_KEY  = { 'ORBIT_KEY' => nil }.freeze
 BAD_KEY = { 'ORBIT_KEY' => 'bad file' }.freeze
 
 assert('version [-v]') do
-  output, status = Open3.capture2(BINARY, '-v')
+  output, status = Open3.capture2(BIN, '-v')
 
   assert_true status.success?, 'Process did not exit cleanly'
   assert_include output, PLIP::VERSION
 end
 
 assert('version [--version]') do
-  output, status = Open3.capture2(BINARY, '--version')
+  output, status = Open3.capture2(BIN, '--version')
 
   assert_true status.success?, 'Process did not exit cleanly'
   assert_include output, PLIP::VERSION
 end
 
 assert('usage [-h]') do
-  output, status = Open3.capture2(BINARY, '-h')
+  output, status = Open3.capture2(BIN, '-h')
 
   assert_true status.success?, 'Process did not exit cleanly'
   assert_include output, 'usage'
 end
 
 assert('usage [--help]') do
-  output, status = Open3.capture2(BINARY, '--help')
+  output, status = Open3.capture2(BIN, '--help')
 
   assert_true status.success?, 'Process did not exit cleanly'
   assert_include output, 'usage'
 end
 
 assert('local [-l]') do
-  _, output, status = Open3.capture3(ORB_KEY, BINARY, '-r', 'remote', 'host')
+  _, output, status = Open3.capture3(BIN, '-r', 'remote', 'host')
   assert_false status.success?, 'Process did exit cleanly'
   assert_include output, 'ArgumentError'
 
-  _, output, status = Open3.capture3(ORB_KEY, BINARY, '-l', 'l', '-r', 'r', 'h')
+  _, output, status = Open3.capture3(BIN, '-l', 'l', '-r', 'r', 'h')
   assert_false status.success?, 'Process did exit cleanly'
   assert_include output, 'NoFileError'
 end
 
 assert('remote [-r]') do
-  _, output, status = Open3.capture3(ORB_KEY, BINARY, '-l', 'local', 'host')
+  _, output, status = Open3.capture3(BIN, '-l', 'local', 'host')
 
   assert_false status.success?, 'Process did exit cleanly'
   assert_include output, 'ArgumentError'
 end
 
-assert('missing $ORBIT_KEY') do
-  _, output, status = Open3.capture3(BINARY, '-d', '-l', 'l', '-r', 'r', 'host')
+assert('no $ORBIT_KEY') do
+  _, output, status = Open3.capture3(NO_KEY, BIN, '-d', '-l', 'l', '-r', 'r', 'host')
 
   assert_false status.success?, 'Process did exit cleanly'
   assert_include output, 'not set'
 end
 
 assert('bad $ORBIT_KEY') do
-  _, output, status = Open3.capture3(BAD_KEY, BINARY, '-d', '-l', 'l', '-r', 'r', 'host')
+  _, output, status = Open3.capture3(BAD_KEY, BIN, '-d', '-l', 'l', '-r', 'r', 'host')
 
   assert_false status.success?, 'Process did exit cleanly'
   assert_include output, 'NoFileError'
 end
 
-assert('missing matcher') do
-  _, output, status = Open3.capture3(ORB_KEY, BINARY, '-d', '-l', 'l', '-r', 'r')
+assert('no matcher') do
+  _, output, status = Open3.capture3(BIN, '-d', '-l', 'l', '-r', 'r')
 
   assert_false status.success?, 'Process did exit cleanly'
   assert_include output, 'ArgumentError'
 end
 
 assert('unknown flag') do
-  _, output, status = Open3.capture3(BINARY, '-unknown')
+  _, output, status = Open3.capture3(BIN, '-unknown')
 
   assert_false status.success?, 'Process did exit cleanly'
   assert_include output, 'unknown option'
+end
+
+`. $HOME/.sshdrc` unless ENV['OS'] == 'Windows_NT'
+
+assert('download') do
+  output, status = Open3.capture2(BIN, '-d', '-r', __FILE__, 'localhost')
+
+  skip('sshd not running') if ENV['OS'] == 'Windows_NT'
+
+  assert_true status.success?, 'Process did not exit cleanly'
+  assert_include output, 'appPlant'
+end
+
+assert('download [-l]') do
+  path           = File.join(Dir.tmpdir, "plip.#{SecureRandom.hex(5)}")
+  final_path     = "#{path}.localhost"
+  output, status = Open3.capture2(BIN, '-d', '-l', path, '-r', __FILE__, 'localhost')
+
+  skip('sshd not running') if ENV['OS'] == 'Windows_NT'
+
+  assert_true status.success?, 'Process did not exit cleanly'
+  assert_true output.empty?
+  assert_true File.exist? final_path
+  assert_equal File.read(__FILE__), File.read(final_path)
+
+  File.delete(final_path)
+end
+
+assert('fifa responds with empty list') do
+  path           = File.join(Dir.tmpdir, "plip.#{SecureRandom.hex(5)}")
+  final_path     = "#{path}.localhost"
+  output, status = Open3.capture2(BIN, '-d', '-l', path, '-r', __FILE__, 'host')
+
+  skip('sshd not running') if ENV['OS'] == 'Windows_NT'
+
+  assert_true status.success?, 'Process did not exit cleanly'
+  assert_true output.empty?
+  assert_false File.exist? final_path
+end
+
+assert('fifa responds with error') do
+  path           = File.join(Dir.tmpdir, "plip.#{SecureRandom.hex(5)}")
+  final_path     = "#{path}.localhost"
+  output, status = Open3.capture2(BIN, '-d', '-l', path, '-r', __FILE__, 'error')
+
+  skip('sshd not running') if ENV['OS'] == 'Windows_NT'
+
+  assert_true status.success?, 'Process did not exit cleanly'
+  assert_true output.empty?
+  assert_false File.exist? final_path
 end

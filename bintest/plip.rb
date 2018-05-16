@@ -129,6 +129,18 @@ assert('download [-l]') do
   File.delete(final_path)
 end
 
+assert('upload') do
+  path           = File.join(Dir.tmpdir, "plip.#{SecureRandom.hex(5)}")
+  output, status = Open3.capture2(BIN, '-l', __FILE__, '-r', path, 'localhost')
+
+  skip('sshd not running') if ENV['OS'] == 'Windows_NT'
+
+  assert_true status.success?, 'Process did not exit cleanly'
+  assert_true output.empty?
+  assert_true File.exist? path
+  assert_equal File.read(__FILE__), File.read(path)
+end
+
 assert('fifa responds with empty list') do
   path           = File.join(Dir.tmpdir, "plip.#{SecureRandom.hex(5)}")
   final_path     = "#{path}.localhost"

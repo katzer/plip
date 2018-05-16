@@ -59,6 +59,11 @@ end
 # @return [ Void ]
 def __main__(args)
   validate(opts = parse(args[1..-1]))
+
+  raise                    '$ORBIT_HOME not set'  unless ENV['ORBIT_HOME']
+  raise                    '$ORBIT_KEY not set'   unless ENV['ORBIT_KEY']
+  raise File::NoFileError, '$ORBIT_KEY not found' unless File.file? ENV['ORBIT_KEY']
+
   execute_request(opts)
 end
 
@@ -84,11 +89,15 @@ end
 # @return [ Void ]
 def download(opts, planets)
   start_sftp_for_each(planets) do |sftp|
+    logger.info msg = "Downloading #{opts[:remote]} from #{sftp.host}"
+
     if opts[:local]
-      sftp.download(opts[:remote], "#{opts[:local]}.#{sftp.session.host}")
+      sftp.download(opts[:remote], "#{opts[:local]}.#{sftp.host}")
     else
       print sftp.download(opts[:remote])
     end
+
+    logger.info "#{msg} done"
   end
 end
 
@@ -100,7 +109,8 @@ end
 # @return [ Void ]
 def upload(opts, planets)
   start_sftp_for_each(planets) do |sftp|
+    logger.info msg = "Uploading #{opts[:local]} to #{sftp.host}"
     sftp.upload(opts[:local], opts[:remote])
-    # sftp.setstat(opts[:remote], opts)
+    logger.info "#{msg} done"
   end
 end

@@ -40,4 +40,6 @@ MRuby::Gem::Specification.new('plip') do |spec|
   spec.add_dependency 'mruby-env',             mgem: 'mruby-env'
   spec.add_dependency 'mruby-os',              mgem: 'mruby-os'
   spec.add_dependency 'mruby-sftp',            mgem: 'mruby-sftp'
+  spec.add_dependency 'mruby-logger',          mgem: 'mruby-logger'
+  spec.add_dependency 'mruby-dir',             mgem: 'mruby-dir'
 end

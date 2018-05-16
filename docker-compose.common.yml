@@ -25,8 +25,9 @@ compile: &defaults
   volumes:
     - .:/home/mruby/code:rw
   environment:
-    MRUBY_CONFIG: build_config.glibc-2.12.rb
+    ORBIT_HOME: /home/mruby/code/bintest
     ORBIT_KEY: /root/.ssh/dev.key
+    MRUBY_CONFIG: build_config.glibc-2.12.rb
   command: rake compile
 bintest:
   <<: *defaults

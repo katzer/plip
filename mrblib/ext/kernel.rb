@@ -37,7 +37,7 @@ ensure
   opts[:mode] = opts[:mode].to_s.to_i(8) if opts
 end
 
-# rubocop:disable CyclomaticComplexity, PerceivedComplexity, AbcSize, LineLength
+# rubocop:disable CyclomaticComplexity, AbcSize, LineLength
 
 # Validate the parsed command-line arguments.
 # Raises an error in case of something is missing or invalid.
@@ -46,23 +46,35 @@ end
 #
 # @return [ Void ]
 def validate(opt)
-  raise                    '$ORBIT_KEY not set'            unless ENV['ORBIT_KEY']
-  raise File::NoFileError, '$ORBIT_KEY not found'          unless File.file? ENV['ORBIT_KEY']
   raise ArgumentError,     'Missing local file'            unless opt[:local] || opt[:download]
   raise ArgumentError,     'Missing remote file'           unless opt[:remote]
   raise ArgumentError,     'Missing matcher'               unless @parser.tail.any?
   raise File::NoFileError, "No such file - #{opt[:local]}" unless opt[:download] || File.file?(opt[:local])
 end
 
-# rubocop:enable CyclomaticComplexity, PerceivedComplexity, AbcSize, LineLength
+# rubocop:enable CyclomaticComplexity, AbcSize, LineLength
 
 # Server list retrieved from fifa.
 #
-# @return [ Array<String> ] A list of user@host connections.
+# @return [ Array<"user@host"> ]
 def planets
   @planets ||= `fifa -f=ssh #{@parser.tail.join(' ')}`
                .split("\n")
                .map! { |ssh| ssh.split('@') }
+end
+
+# Logging device that writes into $ORBIT_HOME/log/plip.log
+#
+# @return [ Logger ]
+def logger
+  $logger ||= begin
+    dir = File.join(ENV['ORBIT_HOME'], 'log')
+    Dir.mkdir(dir) unless Dir.exist? dir
+
+    Logger.new("#{dir}/plip.log", formatter: lambda do |sev, ts, _, msg|
+      "[#{sev[0, 3]}] #{ts}: #{msg}\n"
+    end)
+  end
 end
 
 # Devide the list of planets into slices and execute the code block
@@ -89,8 +101,10 @@ end
 # @return [ Void ]
 def start_sftp_for_each(planets)
   planets.each do |user, host|
-    SFTP.start(host, user, key: ENV['ORBIT_KEY'], compress: true) do |sftp|
-      yield sftp
-    end
+    yield sftp = SFTP.start(host, user, key: ENV['ORBIT_KEY'], compress: true)
+  rescue RuntimeError
+    logger.error "#{user}@#{host} #{sftp.session.last_error} #{sftp.session.last_errno} #{sftp.last_errno}"
+  ensure
+    sftp.session.close
   end
 end

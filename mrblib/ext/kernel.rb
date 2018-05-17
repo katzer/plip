@@ -39,7 +39,6 @@ module Kernel
   def parse(args)
     opts        = @parser.parse(args.empty? ? ['-h'] : args)
     opts[:mode] = opts[:mode].to_s.to_i(8)
-    opts[:key]  = ENV['ORBIT_KEY']
     opts
   end
 
@@ -109,9 +108,9 @@ module Kernel
   # @param [ Array<String, String> ] planets A list of user@host connections.
   #
   # @return [ Void ]
-  def start_sftp_for_each(planets, opts)
+  def start_sftp_for_each(planets)
     planets.each do |user, host|
-      yield sftp = SFTP.start(host, user, opts)
+      yield sftp = SFTP.start(host, user, key: ENV['ORBIT_KEY'], compress: true)
     rescue RuntimeError
       logger.error "#{user}@#{host} #{sftp.session.last_error} #{sftp.session.last_errno} #{sftp.last_errno}"
     ensure

@@ -27,7 +27,6 @@
   opts.add :gid,      :int
   opts.add :mode,     :int, 644
   opts.add :download, :bool, false
-  opts.add :compress, :bool, false
 end
 
 @parser.on! :help do
@@ -37,7 +36,6 @@ end
 
 usage: plip [options...] -l local_file -r remote_file matchers...
 Options:
--c, --compress  Enable compression
 -d, --download  Download the file from the remote host
 -l, --local     Set the path of the local file
 -r, --remote    Set the path of the remote file
@@ -71,7 +69,7 @@ end
 # @return [ Void ]
 def execute(opts)
   async do |planets|
-    start_sftp_for_each(planets, opts) do |sftp|
+    start_sftp_for_each(planets) do |sftp|
       if !opts[:download] then upload(sftp, opts)
       elsif opts[:local]  then download(sftp, opts)
       else                     cat(sftp, opts)

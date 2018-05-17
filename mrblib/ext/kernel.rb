@@ -32,27 +32,32 @@ end
 #
 # @return [ Hash<Symbol, Object> ]
 def parse(args)
-  opts = @parser.parse(args.empty? ? ['-h'] : args)
-ensure
-  opts[:mode] = opts[:mode].to_s.to_i(8) if opts
+  opts        = @parser.parse(args.empty? ? ['-h'] : args)
+  opts[:mode] = opts[:mode].to_s.to_i(8)
+  opts[:key]  = ENV['ORBIT_KEY']
+  opts
 end
 
-# rubocop:disable CyclomaticComplexity, AbcSize, LineLength
+# rubocop:disable CyclomaticComplexity, PerceivedComplexity, AbcSize, LineLength
 
 # Validate the parsed command-line arguments.
 # Raises an error in case of something is missing or invalid.
 #
 # @param [ Hash<Symbol, Object> ] opt The parsed arguments.
 #
-# @return [ Void ]
+# @return [ Hash<Symbol, Object> ] opt
 def validate(opt)
   raise ArgumentError,     'Missing local file'            unless opt[:local] || opt[:download]
   raise ArgumentError,     'Missing remote file'           unless opt[:remote]
   raise ArgumentError,     'Missing matcher'               unless @parser.tail.any?
   raise File::NoFileError, "No such file - #{opt[:local]}" unless opt[:download] || File.file?(opt[:local])
+  raise                    '$ORBIT_HOME not set'           unless ENV['ORBIT_HOME']
+  raise                    '$ORBIT_KEY not set'            unless ENV['ORBIT_KEY']
+  raise File::NoFileError, '$ORBIT_KEY not found'          unless File.file? ENV['ORBIT_KEY']
+  opt
 end
 
-# rubocop:enable CyclomaticComplexity, AbcSize, LineLength
+# rubocop:enable CyclomaticComplexity, PerceivedComplexity, AbcSize, LineLength
 
 # Server list retrieved from fifa.
 #
@@ -99,9 +104,9 @@ end
 # @param [ Array<String, String> ] planets A list of user@host connections.
 #
 # @return [ Void ]
-def start_sftp_for_each(planets)
+def start_sftp_for_each(planets, opts)
   planets.each do |user, host|
-    yield sftp = SFTP.start(host, user, key: ENV['ORBIT_KEY'], compress: true)
+    yield sftp = SFTP.start(host, user, opts)
   rescue RuntimeError
     logger.error "#{user}@#{host} #{sftp.session.last_error} #{sftp.session.last_errno} #{sftp.last_errno}"
   ensure

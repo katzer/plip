@@ -27,6 +27,7 @@
   opts.add :gid,      :int
   opts.add :mode,     :int, 644
   opts.add :download, :bool, false
+  opts.add :compress, :bool, false
 end
 
 @parser.on! :help do
@@ -36,6 +37,7 @@ end
 
 usage: plip [options...] -l local_file -r remote_file matchers...
 Options:
+-c, --compress  Enable compression
 -d, --download  Download the file from the remote host
 -l, --local     Set the path of the local file
 -r, --remote    Set the path of the remote file
@@ -58,59 +60,60 @@ end
 #
 # @return [ Void ]
 def __main__(args)
-  validate(opts = parse(args[1..-1]))
-
-  raise                    '$ORBIT_HOME not set'  unless ENV['ORBIT_HOME']
-  raise                    '$ORBIT_KEY not set'   unless ENV['ORBIT_KEY']
-  raise File::NoFileError, '$ORBIT_KEY not found' unless File.file? ENV['ORBIT_KEY']
-
-  execute_request(opts)
+  execute validate parse args[1..-1]
 end
 
 # Execute the request specified by the command-line arguments. Each download or
 # upload operation will be executed asnyc in a thread.
 #
-# @param [ Hash<Symbol, Object> ] args The parsed command-line arguments.
+# @param [ Hash<Symbol, Object> ] opts The parsed command-line arguments.
 #
 # @return [ Void ]
-def execute_request(args)
-  if args[:download]
-    async { |planets| download(args, planets) }
-  else
-    async { |planets| upload(args, planets) }
+def execute(opts)
+  async do |planets|
+    start_sftp_for_each(planets, opts) do |sftp|
+      if !opts[:download] then upload(sftp, opts)
+      elsif opts[:local]  then download(sftp, opts)
+      else                     cat(sftp, opts)
+      end
+    end
   end
 end
 
 # Download the file as specified by opts.
 #
-# @param [ Hash<Symbol, Object> ] opts    The parsed argument list.
-# @param [ Array<String> ]        planets A list of user@host connections.
+# @param [ SFTP::Session ]        sftp The connected SFTP session.
+# @param [ Hash<Symbol, Object> ] opts The parsed argument list.
 #
 # @return [ Void ]
-def download(opts, planets)
-  start_sftp_for_each(planets) do |sftp|
-    logger.info msg = "Downloading #{opts[:remote]} from #{sftp.host}"
+def download(sftp, opts)
+  path = "#{opts[:local]}.#{sftp.host}"
 
-    if opts[:local]
-      sftp.download(opts[:remote], "#{opts[:local]}.#{sftp.host}")
-    else
-      print sftp.download(opts[:remote])
-    end
+  logger.info msg = "Downloading #{opts[:remote]} from #{sftp.host} to #{path}"
+  sftp.download(opts[:remote], path)
+  logger.info "#{msg} done"
+end
 
-    logger.info "#{msg} done"
-  end
+# Download the file as specified by opts.
+#
+# @param [ SFTP::Session ]        sftp The connected SFTP session.
+# @param [ Hash<Symbol, Object> ] opts The parsed argument list.
+#
+# @return [ Void ]
+def cat(sftp, opts)
+  logger.info msg = "Downloading #{opts[:remote]} from #{sftp.host}"
+  print sftp.download(opts[:remote])
+  logger.info "#{msg} done"
 end
 
 # Upload the file as specified by opts.
 #
-# @param [ Hash<Symbol, Object> ] opts    The parsed argument list.
-# @param [ Array<String> ]        planets A list of user@host connections.
+# @param [ SFTP::Session ]        sftp The connected SFTP session.
+# @param [ Hash<Symbol, Object> ] opts The parsed argument list.
 #
 # @return [ Void ]
-def upload(opts, planets)
-  start_sftp_for_each(planets) do |sftp|
-    logger.info msg = "Uploading #{opts[:local]} to #{sftp.host}"
-    sftp.upload(opts[:local], opts[:remote])
-    logger.info "#{msg} done"
-  end
+def upload(sftp, opts)
+  logger.info msg = "Uploading #{opts[:local]} to #{sftp.host}"
+  sftp.upload(opts[:local], opts[:remote])
+  logger.info "#{msg} done"
 end

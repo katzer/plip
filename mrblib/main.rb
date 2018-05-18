@@ -69,7 +69,6 @@ end
 def parse(args)
   opts           = @parser.parse(args.empty? ? ['-h'] : args)
   opts[:mode]    = opts[:mode].to_s.to_i(8)
-  opts[:planets] = planets
   opts
 end
 
@@ -89,6 +88,8 @@ def validate(opts)
   raise                    '$ORBIT_HOME not set'  unless ENV['ORBIT_HOME']
   raise                    '$ORBIT_KEY not set'   unless ENV['ORBIT_KEY']
   raise File::NoFileError, '$ORBIT_KEY not found' unless File.file? ENV['ORBIT_KEY']
+
+  opts[:planets] = planets
   opts
 end
 

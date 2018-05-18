@@ -1,4 +1,4 @@
-# plip - Planet Impact Probe <br> [![Build Status](https://travis-ci.org/appPlant/plip.svg?branch=master)](https://travis-ci.org/appPlant/plip) [![Build status](https://ci.appveyor.com/api/projects/status/y4t2hib480fgsyl0/branch/master?svg=true)](https://ci.appveyor.com/project/katzer/plip/branch/master) [![codebeat badge](https://codebeat.co/badges/70ccb283-c568-45b2-91ca-7d79341058cc)](https://codebeat.co/projects/github-com-appplant-plip-master)
+# plip - Planet Impact Probe <br> [![Build Status](https://travis-ci.org/appPlant/plip.svg?branch=master)](https://travis-ci.org/appPlant/plip) [![Build status](https://ci.appveyor.com/api/projects/status/y4t2hib480fgsyl0/branch/master?svg=true)](https://ci.appveyor.com/project/katzer/plip/branch/master) [![Maintainability](https://api.codeclimate.com/v1/badges/39da9afecddcd804781f/maintainability)](https://codeclimate.com/github/appPlant/plip/maintainability)
 
 Upload or download a file on multiple "planets" in parallel via SFTP.
 

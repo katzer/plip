@@ -94,7 +94,7 @@ module PLIP
     # @return [ Logger ]
     def logger
       $logger ||= begin
-        dir = File.join(ENV['ORBIT_HOME'], 'log')
+        dir = File.join(ENV['ORBIT_HOME'], 'logs')
         Dir.mkdir(dir) unless Dir.exist? dir
 
         Logger.new("#{dir}/plip.log", formatter: lambda do |sev, ts, _, msg|

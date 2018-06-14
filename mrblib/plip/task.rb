@@ -83,6 +83,7 @@ module PLIP
     # @return [ Void ]
     def upload(sftp)
       log "Uploading #{opts[:local]} to #{sftp.host}" do
+        sftp.session.timeout = 120_000
         sftp.upload(opts[:local], opts[:remote])
       end
     end

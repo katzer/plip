@@ -22,6 +22,9 @@
 
 module PLIP
   class Task
+    # Default configuration for every SFTP connection
+    SFTP_CONFIG = { key: ENV['ORBIT_KEY'], compress: true, timeout: 5_000 }.freeze
+
     # Download/Upload the file specified by the opts.
     #
     # @param [ Hash<Symbol, _> ] opts A key: value map
@@ -83,7 +86,7 @@ module PLIP
     # @return [ Void ]
     def upload(sftp)
       log "Uploading #{opts[:local]} to #{sftp.host}" do
-        sftp.session.timeout = 120_000
+        sftp.session.timeout = 60_000
         sftp.upload(opts[:local], opts[:remote])
       end
     end
@@ -117,6 +120,17 @@ module PLIP
       logger.info "#{msg} done"
     end
 
+    # Write an error log message.
+    #
+    # @param [ String ] user The remote user.
+    # @param [ String ] host The remote host.
+    # @param [ SFTP::Session ] sftp The connected SFTP session.
+    #
+    # @return [ Void ]
+    def log_error(user, host, ssh, msg)
+      logger.error "#{user}@#{host} #{ssh.last_error} #{ssh.last_errno} #{msg}"
+    end
+
     # Devide the list of planets into slices and execute the code block
     # for each slice within an own thread.
     #
@@ -142,13 +156,17 @@ module PLIP
     # @return [ Void ]
     def start_sftp_for_each(planets)
       planets.each do |user, host|
-        sftp = SFTP.start(host, user, key: ENV['ORBIT_KEY'], compress: true)
-        ssh  = sftp.session
-        yield(sftp)
-      rescue RuntimeError
-        logger.error "#{user}@#{host} #{ssh.last_error} #{ssh.last_errno} #{sftp.last_errno}"
+        ssh = SSH.start
+
+        ssh.connect host, SFTP_CONFIG
+        ssh.login_with_public_key user, SFTP_CONFIG[:key]
+
+        yield(sftp = ssh.sftp)
+        log_error(user, host, ssh, sftp.last_errno) if ssh.last_error
+      rescue RuntimeError => e
+        log_error(user, host, ssh, sftp&.last_errno || e.message)
       ensure
-        ssh.close
+        ssh&.close
       end
     end
   end

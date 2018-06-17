@@ -157,7 +157,7 @@ module PLIP
     # @return [ Void ]
     def start_sftp_for_each(planets)
       planets.each do |user, host|
-        ssh = SSH.start(host, user, SFTP_CONFIG)
+        ssh = SSH.start(host, user, SFTP_CONFIG.dup)
         yield(sftp = ssh.sftp)
         log_error(user, host, ssh, sftp.last_errno) if ssh.last_error
       rescue RuntimeError => e

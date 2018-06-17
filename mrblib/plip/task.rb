@@ -124,11 +124,12 @@ module PLIP
     #
     # @param [ String ] user The remote user.
     # @param [ String ] host The remote host.
-    # @param [ SFTP::Session ] sftp The connected SFTP session.
+    # @param [ SSH::Session ] ssh The connected SSH session.
+    # @param [ String ] msg  The error message.
     #
     # @return [ Void ]
-    def log_error(user, host, ssh, msg)
-      logger.error "#{user}@#{host} #{ssh.last_error} #{ssh.last_errno} #{msg}"
+    def log_error(usr, host, ssh, msg)
+      logger.error "#{usr}@#{host} #{ssh&.last_error} #{ssh&.last_errno} #{msg}"
     end
 
     # Devide the list of planets into slices and execute the code block
@@ -156,11 +157,7 @@ module PLIP
     # @return [ Void ]
     def start_sftp_for_each(planets)
       planets.each do |user, host|
-        ssh = SSH.start
-
-        ssh.connect host, SFTP_CONFIG
-        ssh.login_with_public_key user, SFTP_CONFIG[:key]
-
+        ssh = SSH.start(host, user, SFTP_CONFIG)
         yield(sftp = ssh.sftp)
         log_error(user, host, ssh, sftp.last_errno) if ssh.last_error
       rescue RuntimeError => e

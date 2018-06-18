@@ -21,5 +21,5 @@
 # SOFTWARE.
 
 module PLIP
-  VERSION = '1.4.5-dev'.freeze
+  VERSION = '1.4.5-rc'.freeze
 end

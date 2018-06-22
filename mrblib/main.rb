@@ -49,7 +49,7 @@ USAGE
 end
 
 @parser.on! :version do
-  "plip v#{PLIP::VERSION} - #{OS.sysname} #{OS.bits(:binary)}-Bit (#{OS.machine})" # rubocop:disable LineLength
+  "plip #{PLIP::VERSION} - #{OS.sysname} #{OS.bits(:binary)}-Bit (#{OS.machine})" # rubocop:disable LineLength
 end
 
 # Entry point of the tool.

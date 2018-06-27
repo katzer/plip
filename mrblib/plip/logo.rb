@@ -22,7 +22,7 @@
 
 module PLIP
   # Colorized ORBIT logo
-  LOGO = <<-LOGO.set_color(OS.posix? ? 208 : :light_yellow).freeze
+  LOGO = <<-LOGO.chomp.set_color(OS.posix? ? 208 : :light_yellow).freeze
           `-/++++++/:-`
       `/yhyo/:....-:/+syyy+:`
     .yd+`                `-+yds:     `

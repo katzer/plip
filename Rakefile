@@ -115,6 +115,8 @@ task :cleanall do
   sh "rake deep_clean"
 end
 
+task(:sshd) { sh '. $HOME/.sshdrc' }
+
 desc "generate a release tarball"
 task :release => :compile do
   require 'tmpdir'

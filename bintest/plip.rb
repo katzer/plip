@@ -103,8 +103,6 @@ assert('unknown flag') do
   assert_include output, 'unknown option'
 end
 
-`. $HOME/.sshdrc` unless ENV['OS'] == 'Windows_NT'
-
 assert('download') do
   output, status = Open3.capture2(BIN, '-d', '-r', __FILE__, 'localhost')
 

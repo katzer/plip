@@ -78,8 +78,8 @@ end
 #
 # @return [ Void ]
 def validate
-  %w[ORBIT_HOME ORBIT_KEY].each do |env|
-    raise "#{env} not set" unless ENV[env]
-    raise File::NoFileError, "#{env} not found" unless File.exist? ENV[env]
+  %w[ORBIT_HOME ORBIT_BIN ORBIT_KEY].each do |env|
+    raise "#{env} not set"   unless ENV[env]
+    raise "#{env} not found" unless File.exist? ENV[env]
   end
 end

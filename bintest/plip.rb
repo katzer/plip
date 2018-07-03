@@ -86,7 +86,7 @@ assert('bad $ORBIT_KEY') do
   _, output, status = Open3.capture3(BAD_KEY, BIN, '-d', '-l', 'l', '-r', 'r', 'host')
 
   assert_false status.success?, 'Process did exit cleanly'
-  assert_include output, 'NoFileError'
+  assert_include output, 'not found'
 end
 
 assert('no matcher') do
@@ -154,11 +154,11 @@ end
 assert('fifa responds with error') do
   path           = File.join(Dir.tmpdir, "plip.#{SecureRandom.hex(5)}")
   final_path     = "#{path}.localhost"
-  output, status = Open3.capture2(BIN, '-d', '-l', path, '-r', __FILE__, 'error')
+  output, status = Open3.capture2e(BIN, '-d', '-l', path, '-r', __FILE__, 'error')
 
   skip('sshd not running') if ENV['OS'] == 'Windows_NT'
 
-  assert_true status.success?, 'Process did not exit cleanly'
-  assert_true output.empty?
+  assert_false status.success?, 'Process did exit cleanly'
+  assert_include output, 'exit code'
   assert_false File.exist? final_path
 end

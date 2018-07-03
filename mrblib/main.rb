@@ -58,7 +58,7 @@ end
 #
 # @return [ Void ]
 def __main__(args)
-  PLIP.execute validate parse args[1..-1]
+  validate && PLIP::Job.new(parse(args[1..-1])).exec
 end
 
 # Parse the command-line arguments.
@@ -67,38 +67,19 @@ end
 #
 # @return [ Hash<Symbol, Object> ]
 def parse(args)
-  opts           = @parser.parse(args.empty? ? ['-h'] : args)
-  opts[:mode]    = opts[:mode].to_s.to_i(8)
+  opts        = @parser.parse(args.empty? ? ['-h'] : args)
+  opts[:mode] = opts[:mode].to_s.to_i(8)
+  opts[:tail] = @parser.tail
   opts
 end
 
-# rubocop:disable CyclomaticComplexity, PerceivedComplexity, AbcSize, LineLength
-
-# Validate the parsed command-line arguments.
+# Validate the environment variables.
 # Raises an error in case of something is missing or invalid.
 #
-# @param [ Hash<Symbol, Object> ] opts The parsed arguments.
-#
-# @return [ Hash<Symbol, Object> ] opts
-def validate(opts)
-  raise ArgumentError,     'Missing local file'   unless opts[:local] || opts[:download]
-  raise ArgumentError,     'Missing remote file'  unless opts[:remote]
-  raise ArgumentError,     'Missing matcher'      unless @parser.tail.any?
-  raise File::NoFileError, "No such file - #{opts[:local]}" unless opts[:download] || File.file?(opts[:local])
-  raise                    '$ORBIT_HOME not set'  unless ENV['ORBIT_HOME']
-  raise                    '$ORBIT_KEY not set'   unless ENV['ORBIT_KEY']
-  raise File::NoFileError, '$ORBIT_KEY not found' unless File.file? ENV['ORBIT_KEY']
-
-  opts[:planets] = planets
-  opts
-end
-
-# rubocop:enable CyclomaticComplexity, PerceivedComplexity, AbcSize, LineLength
-
-# Server list retrieved from fifa.
-#
-# @return [ Array<"user@host"> ]
-def planets
-  `fifa -f=ssh "#{@parser.tail.join('" "')}"`.split("\n")
-                                             .map! { |ssh| ssh.split('@') }
+# @return [ Void ]
+def validate
+  %w[ORBIT_HOME ORBIT_KEY].each do |env|
+    raise "#{env} not set" unless ENV[env]
+    raise File::NoFileError, "#{env} not found" unless File.exist? ENV[env]
+  end
 end

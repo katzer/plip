@@ -35,22 +35,15 @@ module PLIP
       @opts.freeze
     end
 
-    # The parsed CLI params.
-    #
-    # @return [ Hash ]
-    attr_reader :opts
-
     # Execute the request specified by the command-line arguments. Each
     # download or upload operation will be executed asnyc in a thread.
     #
     # @return [ Void ]
-    def execute
-      async do |planets|
-        start_sftp_for_each(planets) do |ssftp|
-          if !opts[:download] then upload(ssftp)
-          elsif opts[:local]  then download(ssftp)
-          else                     cat(ssftp)
-          end
+    def exec
+      start_sftp_for_each(@opts[:planets]) do |sftp|
+        if !@opts[:download] then upload(sftp)
+        elsif @opts[:local]  then download(sftp)
+        else                      cat(sftp)
         end
       end
     end
@@ -61,10 +54,10 @@ module PLIP
     #
     # @return [ Void ]
     def download(sftp)
-      path = "#{opts[:local]}.#{sftp.host}"
+      path = "#{@opts[:local]}.#{sftp.host}"
 
-      log "Downloading #{opts[:remote]} from #{sftp.host} to #{path}" do
-        sftp.download(opts[:remote], path)
+      log "Downloading #{@opts[:remote]} from #{sftp.host} to #{path}" do
+        sftp.download(@opts[:remote], path)
       end
     end
 
@@ -74,8 +67,8 @@ module PLIP
     #
     # @return [ Void ]
     def cat(sftp)
-      log "Downloading #{opts[:remote]} from #{sftp.host}" do
-        print sftp.download(opts[:remote])
+      log "Downloading #{@opts[:remote]} from #{sftp.host}" do
+        print sftp.download(@opts[:remote])
       end
     end
 
@@ -85,9 +78,9 @@ module PLIP
     #
     # @return [ Void ]
     def upload(sftp)
-      log "Uploading #{opts[:local]} to #{sftp.host}" do
+      log "Uploading #{@opts[:local]} to #{sftp.host}" do
         sftp.session.timeout = 60_000
-        sftp.upload(opts[:local], opts[:remote])
+        sftp.upload(@opts[:local], @opts[:remote])
       end
     end
 
@@ -130,24 +123,6 @@ module PLIP
     # @return [ Void ]
     def log_error(usr, host, ssh, msg)
       logger.error "#{usr}@#{host} #{ssh&.last_error} #{ssh&.last_errno} #{msg}"
-    end
-
-    # Devide the list of planets into slices and execute the code block
-    # for each slice within an own thread.
-    #
-    # @param [ Proc ] &block A code block to execute per slice.
-    #
-    # @return [ Void ]
-    def async(&block)
-      planets = opts[:planets]
-      size    = [(planets.count / 20.0).round, 1].max
-      ths     = []
-
-      planets.each_slice(size) do |slice|
-        ths << Thread.new(slice) { |list| block&.call(list) && true }
-      end
-
-      ths.each(&:join)
     end
 
     # Start a sftp session for each planet in the list.

@@ -29,6 +29,7 @@ compile: &defaults
     MRUBY_VERSION: ${MRUBY_VERSION}
     MRUBY_CONFIG: build_config.${MRUBY_CLI_TAG}.rb
     ORBIT_HOME: /home/mruby/code/bintest
+    ORBIT_BIN: /home/mruby/code/bintest/tools
     ORBIT_KEY: /root/.ssh/dev.key
     SSH2_VERSION: head
   command: rake compile

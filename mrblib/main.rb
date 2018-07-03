@@ -99,7 +99,6 @@ end
 #
 # @return [ Array<"user@host"> ]
 def planets
-  @planets ||= `fifa -f=ssh #{@parser.tail.join(' ')}`
-               .split("\n")
-               .map! { |ssh| ssh.split('@') }
+  `fifa -f=ssh "#{@parser.tail.join('" "')}"`.split("\n")
+                                             .map! { |ssh| ssh.split('@') }
 end

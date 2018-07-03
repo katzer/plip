@@ -27,8 +27,8 @@ require_relative '../mrblib/plip/version'
 
 BIN = File.expand_path('../mruby/bin/plip', __dir__).freeze
 
-NO_KEY  = { 'ORBIT_KEY' => nil }.freeze
-BAD_KEY = { 'ORBIT_KEY' => 'bad file' }.freeze
+NO_KEY  = ENV.to_h.merge('ORBIT_KEY' => nil).freeze
+BAD_KEY = ENV.to_h.merge('ORBIT_KEY' => 'bad file').freeze
 
 assert('version [-v]') do
   output, status = Open3.capture2(BIN, '-v')

@@ -46,15 +46,11 @@ Once done you'll find the 2 files `info.txt.mars` and `info.txt.pluto`.
 
 Clone the repo:
 
-    $ git clone https://github.com/appPlant/plip.git && cd plip/
-
-Make the scripts executable:
-
-    $ chmod u+x scripts/*
+    $ git clone https://github.com/appplant/plip.git && cd plip/
 
 And then execute:
 
-    $ scripts/compile
+    $ rake compile
 
 To compile the sources locally for the host machine only:
 
@@ -75,7 +71,7 @@ For the complete list of build tasks:
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/appPlant/plip.
+Bug reports and pull requests are welcome on GitHub at https://github.com/appplant/plip.
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
@@ -91,7 +87,6 @@ Made with :yum: from Leipzig
 
 © 2018 [appPlant GmbH][appplant]
 
-[releases]: https://github.com/appPlant/plip/releases
-[docker]: https://docs.docker.com/engine/installation
+[releases]: https://github.com/appplant/plip/releases
 [license]: http://opensource.org/licenses/Apache-2.0
 [appplant]: www.appplant.de

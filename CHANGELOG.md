@@ -1,5 +1,9 @@
 ## Release Notes: _plip_
 
+### 1.4.6 (not yet released)
+
+1. Ensure that _fifa_ does not include ansi colors in its output.
+
 ### 1.4.5 - (26.06.2018)
 
 1. Download remote file:

@@ -80,7 +80,8 @@ module PLIP
     #
     # @return [ Array<"user@host"> ]
     def planets
-      cmd = %(#{ENV['ORBIT_BIN']}/fifa -f=ssh "#{@spec[:tail].join('" "')}")
+      args = @spec[:tail].join('" "')
+      cmd = %(#{ENV['ORBIT_BIN']}/fifa --no-color -f=ssh "#{args}")
       out = `#{cmd}`
 
       raise "#{cmd} failed with exit code #{$?}" unless $? == 0

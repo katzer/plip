@@ -3,6 +3,9 @@
 ### 1.4.6 (not yet released)
 
 1. Ensure that _fifa_ does not include ansi colors in its output.
+2. Fix tool fails on Windows because of carriage return token.
+3. Increase MacOSX min SDK version from 10.5 to to 10.11
+4. Remove 32-bit build targets .
 
 ### 1.4.5 - (26.06.2018)
 

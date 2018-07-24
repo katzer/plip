@@ -23,7 +23,7 @@
 module PLIP
   class Task
     # Default configuration for every SSH connection
-    SSH_CONFIG = { key: ENV['ORBIT_KEY'], compress: true, timeout: 5000 }.freeze
+    CONFIG = { key: ENV['ORBIT_KEY'], compress: true, timeout: 5_000 }.freeze
 
     # Download/Upload the file specified by the opts.
     #
@@ -68,7 +68,7 @@ module PLIP
     # @return [ Void ]
     def cat(sftp)
       log "Downloading #{@opts[:remote]} from #{sftp.host}" do
-        print sftp.download(@opts[:remote])
+        STDOUT.print sftp.download(@opts[:remote])
       end
     end
 
@@ -79,7 +79,6 @@ module PLIP
     # @return [ Void ]
     def upload(sftp)
       log "Uploading #{@opts[:local]} to #{sftp.host}" do
-        sftp.session.timeout = 60_000
         sftp.upload(@opts[:local], @opts[:remote])
       end
     end
@@ -135,7 +134,7 @@ module PLIP
     # @return [ SSH::Session ]
     def __connect__(user, host)
       log "Connecting to #{user}@#{host}" do
-        ssh = SSH.start(host, user, SSH_CONFIG.dup)
+        ssh = SSH.start(host, user, CONFIG.dup)
         ssh.timeout = 0
         ssh
       end

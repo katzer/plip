@@ -54,7 +54,9 @@ module PLIP
       ths     = []
 
       servers.each_slice(size) do |slice|
-        ths << Thread.new(@spec.merge(planets: slice)) { |opts| block&.call(opts) && true }
+        ths << Thread.new(@spec.merge(planets: slice)) do |opts|
+          block&.call(opts) && true
+        end
       end
 
       ths.each(&:join)
@@ -86,7 +88,7 @@ module PLIP
 
       raise "#{cmd} failed with exit code #{$?}" unless $? == 0
 
-      out.split("\n").map! { |ssh| ssh.split('@') }
+      out.split("\n").map! { |ssh| ssh.chomp!.split('@') }
     end
   end
 end

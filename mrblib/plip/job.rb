@@ -88,7 +88,7 @@ module PLIP
 
       raise "#{cmd} failed with exit code #{$?}" unless $? == 0
 
-      out.split("\n").map! { |ssh| ssh.chomp!.split('@') }
+      out.split("\n").map! { |ssh| ssh.chomp.split('@') }
     end
   end
 end

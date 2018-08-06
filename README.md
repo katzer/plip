@@ -4,7 +4,7 @@ Upload or download a file on multiple "planets" in parallel via SFTP.
 
     $ plip -h
 
-    usage: plip [options...] -l local_file -r remote_file matchers...
+    Usage: plip [options...] -l local_file -r remote_file matchers...
     Options:
     -d, --download  Download the file from the remote host
     -l, --local     Set the path of the local file

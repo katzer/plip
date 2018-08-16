@@ -1,6 +1,6 @@
 ## Release Notes: _plip_
 
-### 1.4.6 (not yet released)
+### 1.4.6 (16.08.2018)
 
 1. Ensure that _fifa_ does not include ansi colors in its output.
 2. Fix tool fails on Windows because of carriage return token.

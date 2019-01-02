@@ -1,10 +1,21 @@
 ## Release Notes: _plip_
 
+### 1.4.7 (02.01.2019)
+
+1. Dropped compatibility with orbit v1.4.6 due to breaking changes in _fifa_
+
+2. Removed LVAR section for non test builds
+
+3. Upgraded to mruby 2.0.0
+
 ### 1.4.6 (16.08.2018)
 
 1. Ensure that _fifa_ does not include ansi colors in its output.
+
 2. Fix tool fails on Windows because of carriage return token.
+
 3. Increase MacOSX min SDK version from 10.5 to to 10.11
+
 4. Remove 32-bit build targets .
 
 ### 1.4.5 - (26.06.2018)

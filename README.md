@@ -1,4 +1,4 @@
-# plip - Planet Impact Probe <br> [![GitHub release](https://img.shields.io/github/release/appPlant/plip.svg)](https://github.com/appPlant/plip/releases) [![Build Status](https://travis-ci.org/appPlant/plip.svg?branch=master)](https://travis-ci.org/appPlant/plip) [![Build status](https://ci.appveyor.com/api/projects/status/y4t2hib480fgsyl0/branch/master?svg=true)](https://ci.appveyor.com/project/katzer/plip/branch/master) [![Maintainability](https://api.codeclimate.com/v1/badges/39da9afecddcd804781f/maintainability)](https://codeclimate.com/github/appPlant/plip/maintainability)
+# plip - Planet Impact Probe <br> [![GitHub release](https://img.shields.io/github/release/appPlant/plip.svg)](https://github.com/appPlant/plip/releases) [![Build Status](https://travis-ci.com/appPlant/plip.svg?branch=master)](https://travis-ci.com/appPlant/plip) [![Build status](https://ci.appveyor.com/api/projects/status/y4t2hib480fgsyl0/branch/master?svg=true)](https://ci.appveyor.com/project/katzer/plip/branch/master) [![Maintainability](https://api.codeclimate.com/v1/badges/39da9afecddcd804781f/maintainability)](https://codeclimate.com/github/appPlant/plip/maintainability)
 
 Upload or download a file on multiple "planets" in parallel via SFTP.
 
@@ -83,7 +83,7 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/apppla
 
 The code is available as open source under the terms of the [Apache 2.0 License][license].
 
-Made with :yum: from Leipzig
+Made with :yum: in Leipzig
 
 © 2018 [appPlant GmbH][appplant]
 

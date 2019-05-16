@@ -28,9 +28,6 @@ MRuby::Gem::Specification.new('plip') do |spec|
   spec.version = PLIP::VERSION
   spec.bins    = ['plip']
 
-  spec.mruby.cc.defines += %w[MBEDTLS_THREADING_PTHREAD MBEDTLS_THREADING_C]
-  spec.mruby.cc.defines += %w[LIBSSH2_HAVE_ZLIB HAVE_UNISTD_H MRB_SSH_TINY]
-
   spec.add_dependency 'mruby-io',              core: 'mruby-io'
   spec.add_dependency 'mruby-exit',            core: 'mruby-exit'
   spec.add_dependency 'mruby-enum-ext',        core: 'mruby-enum-ext'

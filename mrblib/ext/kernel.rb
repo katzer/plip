@@ -30,4 +30,19 @@ module Kernel
     __printansistr__(str)
     __printstr__("\n") unless str[-1] == "\n"
   end
+
+  FIFA_PATH = ENV.include?('ORBIT_BIN') ? "#{ENV['ORBIT_BIN']}/fifa" : 'fifa'
+
+  # Invoke fifa with the specified query string.
+  #
+  # @param [ String ] query  The query to ask for.
+  #
+  # @return [ Array<String> ]
+  def fifa(query)
+    out = `#{cmd = %(#{FIFA_PATH} -n -f ssh "#{query}")}`
+
+    raise "#{cmd} failed with exit code #{$?}" unless $? == 0
+
+    out.split("\n").each(&:chomp!)
+  end
 end

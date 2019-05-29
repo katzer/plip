@@ -30,32 +30,22 @@ BIN = File.expand_path('../mruby/bin/plip', __dir__).freeze
 NO_KEY  = ENV.to_h.merge('ORBIT_KEY' => nil).freeze
 BAD_KEY = ENV.to_h.merge('ORBIT_KEY' => 'bad file').freeze
 
-assert('version [-v]') do
-  output, status = Open3.capture2(BIN, '-v')
+%w[-v --version].each do |flag|
+  assert("version [#{flag}]") do
+    output, status = Open3.capture2(NO_KEY, BIN, flag)
 
-  assert_true status.success?, 'Process did not exit cleanly'
-  assert_include output, PLIP::VERSION
+    assert_true status.success?, 'Process did not exit cleanly'
+    assert_include output, PLIP::VERSION
+  end
 end
 
-assert('version [--version]') do
-  output, status = Open3.capture2(BIN, '--version')
+%w[-h --help].each do |flag|
+  assert("usage [#{flag}]") do
+    output, status = Open3.capture2(NO_KEY, BIN, flag)
 
-  assert_true status.success?, 'Process did not exit cleanly'
-  assert_include output, PLIP::VERSION
-end
-
-assert('usage [-h]') do
-  output, status = Open3.capture2(BIN, '-h')
-
-  assert_true status.success?, 'Process did not exit cleanly'
-  assert_include output, 'Usage'
-end
-
-assert('usage [--help]') do
-  output, status = Open3.capture2(BIN, '--help')
-
-  assert_true status.success?, 'Process did not exit cleanly'
-  assert_include output, 'Usage'
+    assert_true status.success?, 'Process did not exit cleanly'
+    assert_include output, 'Usage'
+  end
 end
 
 assert('local [-l]') do
@@ -76,14 +66,14 @@ assert('remote [-r]') do
 end
 
 assert('no $ORBIT_KEY') do
-  _, output, status = Open3.capture3(NO_KEY, BIN, '-d', '-l', 'l', '-r', 'r', 'host')
+  _, output, status = Open3.capture3(NO_KEY, BIN, '-d', '-r', 'r', 'host')
 
   assert_false status.success?, 'Process did exit cleanly'
   assert_include output, 'not set'
 end
 
 assert('bad $ORBIT_KEY') do
-  _, output, status = Open3.capture3(BAD_KEY, BIN, '-d', '-l', 'l', '-r', 'r', 'host')
+  _, output, status = Open3.capture3(BAD_KEY, BIN, '-d', '-r', 'r', 'host')
 
   assert_false status.success?, 'Process did exit cleanly'
   assert_include output, 'not found'

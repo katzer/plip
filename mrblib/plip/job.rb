@@ -33,7 +33,7 @@ module PLIP
 
     # Download/Upload the file specified by the opts.
     #
-    # @param [ Hash<Symbol, _> ] opts A key:value map.
+    # @param [ Hash<Symbol,Object> ] opts A key:value map.
     #
     # @return [ Void ]
     def exec
@@ -62,17 +62,37 @@ module PLIP
       ths.each(&:join)
     end
 
-    # rubocop:disable CyclomaticComplexity, AbcSize, LineLength
-
     # Validate the parsed command-line arguments.
     # Raises an error in case of something is missing or invalid.
     #
     # @return [ Boolean ] true if valid
     def validate
+      validate_envs && validate_args
+    end
+
+    # rubocop:disable CyclomaticComplexity, AbcSize, LineLength
+
+    # Validate command-line arguments.
+    # Raises an error in case of something is missing or invalid.
+    #
+    # @return [ Boolean ] true if valid
+    def validate_args
       raise ArgumentError,     'Missing local file'              unless @spec[:local] || @spec[:download]
       raise ArgumentError,     'Missing remote file'             unless @spec[:remote]
       raise ArgumentError,     'Missing matcher'                 unless @spec[:tail].any?
       raise File::NoFileError, "No such file - #{@spec[:local]}" unless @spec[:download] || File.file?(@spec[:local])
+
+      true
+    end
+
+    # Validate environment arguments.
+    # Raises an error in case of something is missing or invalid.
+    #
+    # @return [ Boolean ] true if valid
+    def validate_envs
+      raise KeyError,          '$ORBIT_KEY not set'   unless ENV['ORBIT_KEY']
+      raise File::NoFileError, '$ORBIT_KEY not found' unless File.exist? ENV['ORBIT_KEY']
+
       true
     end
 
@@ -82,13 +102,7 @@ module PLIP
     #
     # @return [ Array<"user@host"> ]
     def planets
-      args = @spec[:tail].join('" "')
-      cmd = %(#{ENV['ORBIT_BIN']}/fifa -n -f ssh "#{args}")
-      out = `#{cmd}`
-
-      raise "#{cmd} failed with exit code #{$?}" unless $? == 0
-
-      out.split("\n").map! { |ssh| ssh.chomp.split('@') }
+      fifa(@spec[:tail].join('" "')).map! { |ssh| ssh.chomp.split('@') }
     end
   end
 end

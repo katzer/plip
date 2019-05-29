@@ -58,7 +58,7 @@ end
 #
 # @return [ Void ]
 def __main__(args)
-  validate && PLIP::Job.new(parse(args[1..-1])).exec
+  PLIP::Job.new(parse(args[1..-1])).exec
 end
 
 # Parse the command-line arguments.
@@ -71,15 +71,4 @@ def parse(args)
   opts[:mode] = opts[:mode].to_s.to_i(8)
   opts[:tail] = @parser.tail
   opts
-end
-
-# Validate the environment variables.
-# Raises an error in case of something is missing or invalid.
-#
-# @return [ Void ]
-def validate
-  %w[ORBIT_HOME ORBIT_BIN ORBIT_KEY].each do |env|
-    raise "#{env} not set"   unless ENV[env]
-    raise "#{env} not found" unless File.exist? ENV[env]
-  end
 end

@@ -22,12 +22,9 @@
 
 module PLIP
   class Task
-    # Default configuration for every SSH connection
-    CONFIG = { key: ENV['ORBIT_KEY'], compress: true, timeout: 5_000 }.freeze
-
     # Download/Upload the file specified by the opts.
     #
-    # @param [ Hash<Symbol, _> ] opts A key: value map
+    # @param [ Hash<Symbol,Object> ] opts A key: value map
     #
     # @return [ Void ]
     def initialize(opts)
@@ -90,7 +87,7 @@ module PLIP
     # @return [ Logger ]
     def logger
       $logger ||= begin
-        dir = File.join(ENV['ORBIT_HOME'], 'logs')
+        dir = File.join(ENV.fetch('ORBIT_HOME', ''), 'logs')
         Dir.mkdir(dir) unless Dir.exist? dir
 
         Logger.new("#{dir}/plip.log", formatter: lambda do |sev, ts, _, msg|
@@ -125,6 +122,15 @@ module PLIP
       logger.error "#{usr}@#{host} #{ssh&.last_error} #{ssh&.last_errno} #{msg}"
     end
 
+    # Configuration for SSH connection.
+    #
+    # @return [ Hash<Symbol,Object> ]
+    def ssh_config
+      { key: ENV.fetch('ORBIT_KEY'), compress: true, timeout: 5_000 }
+    rescue KeyError
+      raise '$ORBIT_KEY not set'
+    end
+
     # Establish a SSH connection to the host and make sure that the timeout is
     # only used for the connect period.
     #
@@ -134,7 +140,7 @@ module PLIP
     # @return [ SSH::Session ]
     def __connect__(user, host)
       log "Connecting to #{user}@#{host}" do
-        ssh = SSH.start(host, user, CONFIG.dup)
+        ssh = SSH.start(host, user, ssh_config)
         ssh.timeout = 0
         ssh
       end

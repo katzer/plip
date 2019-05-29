@@ -29,6 +29,9 @@ Style/ParallelAssignment:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+Style/SpecialGlobalVars:
+  Enabled: false
+
 Style/NumericPredicate:
   EnforcedStyle: comparison
 

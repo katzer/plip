@@ -33,7 +33,6 @@ MRuby::Gem::Specification.new('plip') do |spec|
   spec.add_dependency 'mruby-enum-ext',        core: 'mruby-enum-ext'
   spec.add_dependency 'mruby-thread',          mgem: 'mruby-thread'
   spec.add_dependency 'mruby-tiny-opt-parser', mgem: 'mruby-tiny-opt-parser'
-  spec.add_dependency 'mruby-ansi-colors',     mgem: 'mruby-ansi-colors'
   spec.add_dependency 'mruby-env',             mgem: 'mruby-env'
   spec.add_dependency 'mruby-os',              mgem: 'mruby-os'
   spec.add_dependency 'mruby-sftp',            mgem: 'mruby-sftp'

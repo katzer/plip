@@ -102,7 +102,13 @@ module PLIP
     #
     # @return [ Array<"user@host"> ]
     def planets
-      fifa(@spec[:tail].join('" "')).map! { |ssh| ssh.chomp.split('@') }
+      query = @spec[:tail].join('" "')
+      cmd   = %(#{ENV['ORBIT_BIN']}/fifa -n -f ssh "#{query}")
+      out   = `#{cmd}`
+
+      raise "#{cmd} failed with exit code #{$?}" unless $? == 0
+
+      out.split("\n").map! { |ssh| ssh.chomp.split('@') }
     end
   end
 end

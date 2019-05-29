@@ -31,9 +31,6 @@ end
 
 @parser.on! :help do
   <<-USAGE
-
-#{PLIP::LOGO}
-
 Usage: plip [options...] -l local_file -r remote_file matchers...
 Options:
 -d, --download  Download the file from the remote host

@@ -90,6 +90,7 @@ module PLIP
     #
     # @return [ Boolean ] true if valid
     def validate_envs
+      raise KeyError,          '$ORBIT_BIN not set'   unless ENV['ORBIT_BIN']
       raise KeyError,          '$ORBIT_KEY not set'   unless ENV['ORBIT_KEY']
       raise File::NoFileError, '$ORBIT_KEY not found' unless File.exist? ENV['ORBIT_KEY']
 
@@ -98,7 +99,7 @@ module PLIP
 
     # rubocop:enable CyclomaticComplexity, AbcSize, LineLength
 
-    # Server list retrieved from fifa.
+    # Retrieve list of servers in ssh format from fifa.
     #
     # @return [ Array<"user@host"> ]
     def planets

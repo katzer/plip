@@ -33,8 +33,6 @@ module PLIP
 
     # Download/Upload the file specified by the opts.
     #
-    # @param [ Hash<Symbol,Object> ] opts A key:value map.
-    #
     # @return [ Void ]
     def exec
       validate && async { |opts| PLIP::Task.new(opts).exec }

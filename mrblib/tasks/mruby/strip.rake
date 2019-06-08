@@ -20,24 +20,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-require_relative 'mrblib/plip/version'
-
-MRuby::Gem::Specification.new('plip') do |spec|
-  spec.license = 'Apache 2.0'
-  spec.author  = 'Sebastián Katzer, appPlant GmbH'
-  spec.version = PLIP::VERSION
-  spec.bins    = ['plip']
-
-  spec.rbfiles -= Dir.glob("#{spec.dir}/mrblib/mruby/**/*.rb")
-
-  spec.add_dependency 'mruby-io',              core: 'mruby-io'
-  spec.add_dependency 'mruby-exit',            core: 'mruby-exit'
-  spec.add_dependency 'mruby-enum-ext',        core: 'mruby-enum-ext'
-  spec.add_dependency 'mruby-thread',          mgem: 'mruby-thread'
-  spec.add_dependency 'mruby-tiny-opt-parser', mgem: 'mruby-tiny-opt-parser'
-  spec.add_dependency 'mruby-env',             mgem: 'mruby-env'
-  spec.add_dependency 'mruby-os',              mgem: 'mruby-os'
-  spec.add_dependency 'mruby-sftp',            mgem: 'mruby-sftp'
-  spec.add_dependency 'mruby-logger',          mgem: 'mruby-logger'
-  spec.add_dependency 'mruby-dir',             mgem: 'mruby-dir'
+namespace :mruby do
+  desc 'strip binary'
+  task strip: 'mruby:environment' do
+    MRuby.targets.each_pair do |name, spec|
+      Dir["#{spec.build_dir}/bin/#{MRuby::Gem.current.name}*"].each do |bin|
+        if RbConfig::CONFIG['host_os'].include? 'darwin'
+          sh "strip -u -r -arch all #{bin}"
+        elsif name.include? 'darwin'
+          sh "x86_64-apple-darwin17-strip -u -r -arch all #{bin}"
+        else
+          sh "strip --strip-unneeded #{bin}"
+        end
+      end
+    end
+  end
 end

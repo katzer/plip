@@ -61,7 +61,7 @@ You'll be able to find the binaries in the following directories:
 - Linux (64-bit Musl): `mruby/build/x86_64-alpine-linux-musl/bin/plip`
 - Linux (64-bit GNU): `mruby/build/x86_64-pc-linux-gnu/bin/plip`
 - Linux (64-bit, for old distros): `mruby/build/x86_64-pc-linux-gnu-glibc-2.12/bin/plip`
-- OS X (64-bit): `mruby/build/x86_64-apple-darwin15/bin/plip`
+- OS X (64-bit): `mruby/build/x86_64-apple-darwin17/bin/plip`
 - Windows (64-bit): `mruby/build/x86_64-w64-mingw32/bin/plip`
 - Host: `mruby/build/host2/bin/plip`
 

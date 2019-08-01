@@ -26,7 +26,7 @@ You'll need to add `ORBIT_KEY` first to your profile:
 
 Download the latest version from the [release page][releases] and add the executable to your `PATH`.
 
-## Basic Usage
+## Usage
 
 Upload a file:
 
@@ -47,6 +47,10 @@ Once done you'll find the 2 files `info.txt.mars` and `info.txt.pluto`.
 Clone the repo:
 
     $ git clone https://github.com/appplant/plip.git && cd plip/
+
+Install the dependencies:
+
+    $ bundle
 
 And then execute:
 
@@ -83,7 +87,7 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/apppla
 
 The code is available as open source under the terms of the [Apache 2.0 License][license].
 
-Made with :yum: in Leipzig
+Made with :heart: in Leipzig
 
 © 2018 [appPlant GmbH][appplant]
 

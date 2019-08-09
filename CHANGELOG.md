@@ -1,6 +1,27 @@
-## Release Notes: _plip_
+# Release Notes: _plip_
 
-### 1.4.7 (02.01.2019)
+Upload or download a file on multiple "planets" in parallel via SFTP.
+
+## 1.5.0
+
+Released at: UNRELEASED
+
+1. Added support for `ECDSA` for both key exchange and host key algorithms.
+
+2. Fixed not throwing an error if `ORBIT_PATH` was not set.
+
+3. Compiled binary for OSX build with MacOSX10.13 SDK (Darwin17).
+
+4. Upgraded to mruby 2.0.1
+
+[Full Changelog](https://github.com/appplant/alpinepass/compare/1.4.6...HEAD)
+
+## 1.4.7
+
+Released at: 02.01.2019
+
+<details><summary>Releasenotes</summary>
+<p>
 
 1. Dropped compatibility with orbit v1.4.6 due to breaking changes in _fifa_
 
@@ -8,7 +29,17 @@
 
 3. Upgraded to mruby 2.0.0
 
-### 1.4.6 (16.08.2018)
+</p>
+
+[Full Changelog](https://github.com/appplant/plip/compare/1.4.6...1.4.7)
+</details>
+
+## 1.4.6
+
+Released at: 16.08.2018
+
+<details><summary>Releasenotes</summary>
+<p>
 
 1. Ensure that _fifa_ does not include ansi colors in its output.
 
@@ -16,9 +47,19 @@
 
 3. Increase MacOSX min SDK version from 10.5 to to 10.11
 
-4. Remove 32-bit build targets .
+4. Remove 32-bit build targets.
 
-### 1.4.5 - (26.06.2018)
+</p>
+
+[Full Changelog](https://github.com/appplant/plip/compare/1.4.5...1.4.6)
+</details>
+
+## 1.4.5
+
+Released at: 26.06.2018
+
+<details><summary>Releasenotes</summary>
+<p>
 
 1. Download remote file:
 
@@ -41,9 +82,17 @@
 
   - Shrinks binary size to 1/4
 
-### 1.4.4 - Initial release (29.11.2017)
+</p>
 
-Upload a file on multiple "planets" in parallel via SFTP.
+[Full Changelog](https://github.com/appplant/plip/compare/1.4.4...1.4.5)
+</details>
+
+## 1.4.4
+
+Released at: 29.11.2017
+
+<details><summary>Releasenotes</summary>
+<p>
 
     $ plip -h
 
@@ -58,6 +107,11 @@ Upload a file on multiple "planets" in parallel via SFTP.
     -h, --help      This help text
     -v, --version   Show version number
 
-Upload a file:
+To upload a file:
 
     $ plip -l info.txt -r tmp/info.txt mars pluto
+
+</p>
+
+[Full Changelog](https://github.com/appplant/plip/compare/cb39809bea74b888aea0996b9030aeed6f19fdc4...1.4.4)
+</details>

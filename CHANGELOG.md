@@ -4,7 +4,7 @@ Upload or download a file on multiple "planets" in parallel via SFTP.
 
 ## 1.5.0
 
-Released at: UNRELEASED
+Released at: 13.08.2019
 
 1. Added support for `ECDSA` for both key exchange and host key algorithms.
 
@@ -14,7 +14,7 @@ Released at: UNRELEASED
 
 4. Upgraded to mruby 2.0.1
 
-[Full Changelog](https://github.com/appplant/alpinepass/compare/1.4.6...HEAD)
+[Full Changelog](https://github.com/appplant/plip/compare/1.4.7...1.5.0)
 
 ## 1.4.7
 

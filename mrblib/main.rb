@@ -55,7 +55,7 @@ end
 #
 # @return [ Void ]
 def __main__(args)
-  PLIP::Job.new(parse(args[1..-1])).exec
+  PLIP::Job.new(__parse__(args[1..-1])).exec
 end
 
 # Parse the command-line arguments.
@@ -63,7 +63,7 @@ end
 # @param [ Array<String> ] args The command-line arguments to parse.
 #
 # @return [ Hash<Symbol, Object> ]
-def parse(args)
+def __parse__(args)
   opts        = @parser.parse(args.empty? ? ['-h'] : args)
   opts[:mode] = opts[:mode].to_s.to_i(8)
   opts[:tail] = @parser.tail

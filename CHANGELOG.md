@@ -2,9 +2,20 @@
 
 Upload or download a file on multiple "planets" in parallel via SFTP.
 
+## 1.5.1
+
+Released at: UNRELEASED
+
+1. Singularized folder names.
+
+[Full Changelog](https://github.com/appplant/plip/compare/1.5.0...HEAD)
+
 ## 1.5.0
 
 Released at: 13.08.2019
+
+<details><summary>Releasenotes</summary>
+<p>
 
 1. Added support for `ECDSA` for both key exchange and host key algorithms.
 
@@ -14,7 +25,10 @@ Released at: 13.08.2019
 
 4. Upgraded to mruby 2.0.1
 
+</p>
+
 [Full Changelog](https://github.com/appplant/plip/compare/1.4.7...1.5.0)
+</details>
 
 ## 1.4.7
 

@@ -75,10 +75,10 @@ module PLIP
     #
     # @return [ Boolean ] true if valid
     def validate_args
-      raise ArgumentError,     'Missing local file'              unless @spec[:local] || @spec[:download]
-      raise ArgumentError,     'Missing remote file'             unless @spec[:remote]
-      raise ArgumentError,     'Missing matcher'                 unless @spec[:tail].any?
-      raise File::NoFileError, "No such file - #{@spec[:local]}" unless @spec[:download] || File.file?(@spec[:local])
+      raise ArgumentError, 'Missing local file'              unless @spec[:local] || @spec[:download]
+      raise ArgumentError, 'Missing remote file'             unless @spec[:remote]
+      raise ArgumentError, 'Missing matcher'                 unless @spec[:tail].any?
+      raise ArgumentError, "No such file - #{@spec[:local]}" unless @spec[:download] || File.file?(@spec[:local])
 
       true
     end
@@ -88,8 +88,8 @@ module PLIP
     #
     # @return [ Boolean ] true if valid
     def validate_envs
-      raise KeyError,          '$ORBIT_KEY not set'   unless ENV['ORBIT_KEY']
-      raise File::NoFileError, '$ORBIT_KEY not found' unless File.exist? ENV['ORBIT_KEY']
+      raise KeyError, '$ORBIT_KEY not set'   unless ENV['ORBIT_KEY']
+      raise KeyError, '$ORBIT_KEY not found' unless File.exist? ENV['ORBIT_KEY']
 
       true
     end

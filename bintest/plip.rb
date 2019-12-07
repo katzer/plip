@@ -55,7 +55,7 @@ assert('local [-l]') do
 
   _, output, status = Open3.capture3(BIN, '-l', 'l', '-r', 'r', 'h')
   assert_false status.success?, 'Process did exit cleanly'
-  assert_include output, 'NoFileError'
+  assert_include output, 'ArgumentError'
 end
 
 assert('remote [-r]') do

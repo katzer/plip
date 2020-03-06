@@ -25,6 +25,10 @@ dist: bionic
 
 language: generic
 
+env:
+  global:
+  - LIBSSH2_VERSION: head
+
 jobs:
   include:
   - env: MRUBY_VERSION=2.1.0
@@ -55,18 +59,18 @@ before_deploy:
 - ls -la releases/v$BUILD_VERSION
 
 deploy:
-  provider: releases
-  token: "$GITHUB_OAUTH_TOKEN"
-  edge: true
-  file:
-  - "releases/v$BUILD_VERSION/plip-$BUILD_VERSION-x86_64-apple-darwin17.tgz"
-  - "releases/v$BUILD_VERSION/plip-$BUILD_VERSION-x86_64-alpine-linux-musl.tgz"
-  - "releases/v$BUILD_VERSION/plip-$BUILD_VERSION-x86_64-pc-linux-gnu.tgz"
-  - "releases/v$BUILD_VERSION/plip-$BUILD_VERSION-x86_64-pc-linux-gnu-glibc-2.9.tgz"
-  - "releases/v$BUILD_VERSION/plip-$BUILD_VERSION-x86_64-w64-mingw32.tgz"
-  on:
-    tags: true
-    branch: master
-    condition:
-    - "$MRUBY_VERSION == 2.1.0"
-    - "$TRAVIS_OS_NAME == linux"
+  - provider: releases
+    token: "$GITHUB_OAUTH_TOKEN"
+    edge: true
+    file:
+    - "releases/v$BUILD_VERSION/plip-$BUILD_VERSION-x86_64-apple-darwin17.tgz"
+    - "releases/v$BUILD_VERSION/plip-$BUILD_VERSION-x86_64-alpine-linux-musl.tgz"
+    - "releases/v$BUILD_VERSION/plip-$BUILD_VERSION-x86_64-pc-linux-gnu.tgz"
+    - "releases/v$BUILD_VERSION/plip-$BUILD_VERSION-x86_64-pc-linux-gnu-glibc-2.9.tgz"
+    - "releases/v$BUILD_VERSION/plip-$BUILD_VERSION-x86_64-w64-mingw32.tgz"
+    on:
+      tags: true
+      branch: master
+      condition:
+      - "$MRUBY_VERSION == 2.1.0"
+      - "$TRAVIS_OS_NAME == linux"

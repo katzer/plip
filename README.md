@@ -1,4 +1,4 @@
-# plip - Planet Impact Probe <br> [![GitHub release](https://img.shields.io/github/release/appPlant/plip.svg)](https://github.com/appPlant/plip/releases) [![Build Status](https://travis-ci.com/appPlant/fifa.svg?branch=master)](https://travis-ci.com/appPlant/fifa) [![Build status](https://ci.appveyor.com/api/projects/status/y4t2hib480fgsyl0/branch/master?svg=true)](https://ci.appveyor.com/project/katzer/plip/branch/master) [![Maintainability](https://api.codeclimate.com/v1/badges/39da9afecddcd804781f/maintainability)](https://codeclimate.com/github/appPlant/plip/maintainability)
+# plip - Planet Impact Probe <br> [![GitHub release](https://img.shields.io/github/release/katzer/plip.svg)](https://github.com/katzer/plip/releases) [![Build Status](https://travis-ci.com/katzer/fifa.svg?branch=master)](https://travis-ci.com/katzer/fifa) [![Build status](https://ci.appveyor.com/api/projects/status/y4t2hib480fgsyl0/branch/master?svg=true)](https://ci.appveyor.com/project/katzer/plip/branch/master) [![Maintainability](https://api.codeclimate.com/v1/badges/39da9afecddcd804781f/maintainability)](https://codeclimate.com/github/katzer/plip/maintainability)
 
 Upload or download a file on multiple "planets" in parallel via SFTP.
 
@@ -46,7 +46,7 @@ Once done you'll find the 2 files `info.txt.mars` and `info.txt.pluto`.
 
 Clone the repo:
 
-    $ git clone https://github.com/appplant/plip.git && cd plip/
+    $ git clone https://github.com/katzer/plip.git && cd plip/
 
 Install the dependencies:
 
@@ -75,7 +75,7 @@ For the complete list of build tasks:
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/appplant/plip.
+Bug reports and pull requests are welcome on GitHub at https://github.com/katzer/plip.
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
@@ -91,6 +91,6 @@ Made with :heart: in Leipzig
 
 © 2018 [appPlant GmbH][appplant]
 
-[releases]: https://github.com/appplant/plip/releases
+[releases]: https://github.com/katzer/plip/releases
 [license]: http://opensource.org/licenses/Apache-2.0
 [appplant]: www.appplant.de

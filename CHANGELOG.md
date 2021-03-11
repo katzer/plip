@@ -16,7 +16,7 @@ Released at: 18.03.2020
 
 5. Upgraded to mruby 2.1.0
 
-[Full Changelog](https://github.com/appplant/plip/compare/1.5.0...1.5.1)
+[Full Changelog](https://github.com/katzer/plip/compare/1.5.0...1.5.1)
 
 ## 1.5.0
 
@@ -35,7 +35,7 @@ Released at: 13.08.2019
 
 </p>
 
-[Full Changelog](https://github.com/appplant/plip/compare/1.4.7...1.5.0)
+[Full Changelog](https://github.com/katzer/plip/compare/1.4.7...1.5.0)
 </details>
 
 ## 1.4.7
@@ -53,7 +53,7 @@ Released at: 02.01.2019
 
 </p>
 
-[Full Changelog](https://github.com/appplant/plip/compare/1.4.6...1.4.7)
+[Full Changelog](https://github.com/katzer/plip/compare/1.4.6...1.4.7)
 </details>
 
 ## 1.4.6
@@ -73,7 +73,7 @@ Released at: 16.08.2018
 
 </p>
 
-[Full Changelog](https://github.com/appplant/plip/compare/1.4.5...1.4.6)
+[Full Changelog](https://github.com/katzer/plip/compare/1.4.5...1.4.6)
 </details>
 
 ## 1.4.5
@@ -106,7 +106,7 @@ Released at: 26.06.2018
 
 </p>
 
-[Full Changelog](https://github.com/appplant/plip/compare/1.4.4...1.4.5)
+[Full Changelog](https://github.com/katzer/plip/compare/1.4.4...1.4.5)
 </details>
 
 ## 1.4.4
@@ -135,5 +135,5 @@ To upload a file:
 
 </p>
 
-[Full Changelog](https://github.com/appplant/plip/compare/cb39809bea74b888aea0996b9030aeed6f19fdc4...1.4.4)
+[Full Changelog](https://github.com/katzer/plip/compare/cb39809bea74b888aea0996b9030aeed6f19fdc4...1.4.4)
 </details>

@@ -48,7 +48,7 @@ module PLIP
     # @return [ Void ]
     def async(&block)
       servers = planets
-      size    = [(servers.count / 20.0).round, 1].max
+      size    = [servers.count / 20, 1].max
       ths     = []
 
       servers.each_slice(size) do |slice|

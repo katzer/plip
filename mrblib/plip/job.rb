@@ -60,36 +60,17 @@ module PLIP
       ths.each(&:join)
     end
 
-    # Validate the parsed command-line arguments.
-    # Raises an error in case of something is missing or invalid.
-    #
-    # @return [ Boolean ] true if valid
-    def validate
-      validate_envs && validate_args
-    end
-
     # rubocop:disable CyclomaticComplexity, AbcSize, LineLength
 
     # Validate command-line arguments.
     # Raises an error in case of something is missing or invalid.
     #
     # @return [ Boolean ] true if valid
-    def validate_args
+    def validate
       raise ArgumentError, 'Missing local file'              unless @spec[:local] || @spec[:download]
       raise ArgumentError, 'Missing remote file'             unless @spec[:remote]
       raise ArgumentError, 'Missing matcher'                 unless @spec[:tail].any?
       raise ArgumentError, "No such file - #{@spec[:local]}" unless @spec[:download] || File.file?(@spec[:local])
-
-      true
-    end
-
-    # Validate environment arguments.
-    # Raises an error in case of something is missing or invalid.
-    #
-    # @return [ Boolean ] true if valid
-    def validate_envs
-      raise KeyError, '$ORBIT_KEY not set'   unless ENV['ORBIT_KEY']
-      raise KeyError, '$ORBIT_KEY not found' unless File.exist? ENV['ORBIT_KEY']
 
       true
     end

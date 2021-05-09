@@ -22,6 +22,9 @@
 
 module PLIP
   class Task
+    # Used for every SSH connection
+    SSH_CONFIIG = { use_agent: true, compress: true, timeout: 5_000 }.freeze
+
     # Download/Upload the file specified by the opts.
     #
     # @param [ Hash<Symbol,Object> ] opts A key: value map
@@ -122,15 +125,6 @@ module PLIP
       logger.error "#{usr}@#{host} #{ssh&.last_error} #{ssh&.last_errno} #{msg}"
     end
 
-    # Configuration for SSH connection.
-    #
-    # @return [ Hash<Symbol,Object> ]
-    def ssh_config
-      { key: ENV.fetch('ORBIT_KEY'), compress: true, timeout: 5_000 }
-    rescue KeyError
-      raise '$ORBIT_KEY not set'
-    end
-
     # Establish a SSH connection to the host and make sure that the timeout is
     # only used for the connect period.
     #
@@ -140,7 +134,7 @@ module PLIP
     # @return [ SSH::Session ]
     def __connect__(user, host)
       log "Connecting to #{user}@#{host}" do
-        ssh = SSH.start(host, user, ssh_config)
+        ssh = SSH.start(host, user, SSH_CONFIIG)
         ssh.timeout = 0
         ssh
       end

@@ -18,9 +18,13 @@ Upload or download a file on multiple "planets" in parallel via SFTP.
 
 ## Prerequisites
 
-You'll need to add `ORBIT_KEY` first to your profile:
+You'll need to add `ORBIT_HOME` first to your profile:
 
-    $ export ORBIT_KEY=/path/to/orbit/key
+    $ export ORBIT_HOME=/path/to/orbit
+
+Then setup the SSH agent for passwordless authentication:
+
+    $ ssh-add /path/to/key
 
 ## Installation
 

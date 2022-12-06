@@ -82,7 +82,16 @@ assert('download') do
   skip('sshd not running') if ENV['OS'] == 'Windows_NT'
 
   assert_true status.success?, 'Process did not exit cleanly'
-  assert_include output, 'appPlant'
+  assert_include output, 'Sebastian'
+end
+
+assert('download [-s]') do
+  output, status = Open3.capture2(BIN, '-d', '-s', '8', '-r', __FILE__, 'localhost')
+
+  skip('sshd not running') if ENV['OS'] == 'Windows_NT'
+
+  assert_true status.success?, 'Process did not exit cleanly'
+  assert_equal '# Apache', output
 end
 
 assert('download [-l]') do

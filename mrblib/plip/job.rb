@@ -51,9 +51,11 @@ module PLIP
       size    = [servers.count / 20, 1].max
       ths     = []
 
+      return yield @spec.merge(planets: servers) if size >= servers.count
+
       servers.each_slice(size) do |slice|
         ths << Thread.new(@spec.merge(planets: slice)) do |opts|
-          block&.call(opts) && true
+          block.call(opts) && true
         end
       end
 

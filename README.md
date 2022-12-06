@@ -9,6 +9,7 @@ Upload or download a file on multiple "planets" in parallel via SFTP.
     -d, --download  Download the file from the remote host
     -l, --local     Set the path of the local file
     -r, --remote    Set the path of the remote file
+    -s, --size      Amount of bytes to read
     -u, --uid       Change the user ID of the remote file
     -g, --gid       Change the group ID of the remote file
     -m, --mode      Change the modes of the remote file

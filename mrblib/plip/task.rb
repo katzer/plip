@@ -68,7 +68,7 @@ module PLIP
     # @return [ Void ]
     def cat(sftp)
       log "Downloading #{@opts[:remote]} from #{sftp.host}" do
-        STDOUT.print sftp.download(@opts[:remote])
+        STDOUT.print sftp.read(@opts[:remote], @opts[:size])
       end
     end
 

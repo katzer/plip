@@ -8,11 +8,13 @@ Released at:
 
 1. Use SSH Agent instead of `$ORBIT_KEY` for authentication.
 
-2. Upgraded to mruby 3.0.0
+2. Added `-s` flag to specify the amount of bytes to read.
 
-3. Compiled binary for OSX build with MacOSX11.3 SDK (Darwin19)
+3. Compiled binary for OSX build with MacOSX11.3 SDK.
 
-4. Added binary for `arm64-apple-darwin19` target
+4. Added binary for `arm64-apple-darwin19` target.
+
+5. Upgraded to mruby 3.0.0
 
 [Full Changelog](https://github.com/katzer/plip/compare/1.5.1...HEAD)
 

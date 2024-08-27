@@ -4,7 +4,7 @@ Upload or download a file on multiple "planets" in parallel via SFTP.
 
 ## 1.5.2
 
-Released at:
+Released at: 27.08.2024
 
 1. Use SSH Agent instead of `$ORBIT_KEY` for authentication.
 
@@ -16,7 +16,7 @@ Released at:
 
 5. Upgraded to mruby 3.2.0
 
-[Full Changelog](https://github.com/katzer/plip/compare/1.5.1...HEAD)
+[Full Changelog](https://github.com/katzer/plip/compare/1.5.1...1.5.2)
 
 ## 1.5.1
 

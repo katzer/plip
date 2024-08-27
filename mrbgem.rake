@@ -31,7 +31,7 @@ MRuby::Gem::Specification.new('plip') do |spec|
   spec.add_dependency 'mruby-io',              core: 'mruby-io'
   spec.add_dependency 'mruby-exit',            core: 'mruby-exit'
   spec.add_dependency 'mruby-enum-ext',        core: 'mruby-enum-ext'
-  spec.add_dependency 'mruby-thread',          mgem: 'mruby-thread'
+  spec.add_dependency 'mruby-thread',          github: 'katzer/mruby-thread'
   spec.add_dependency 'mruby-tiny-opt-parser', mgem: 'mruby-tiny-opt-parser'
   spec.add_dependency 'mruby-env',             mgem: 'mruby-env'
   spec.add_dependency 'mruby-os',              mgem: 'mruby-os'
